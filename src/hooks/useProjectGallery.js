@@ -38,6 +38,7 @@ export const useProjectGallery = (project) => {
   const [galleryError, setGalleryError] = useState('');
   const [hasGalleryMedia, setHasGalleryMedia] = useState(false);
   const fallbackThumbnailPublicId = getFallbackThumbnail(project);
+  const hasStaticMedia = Boolean(fallbackThumbnailPublicId) || baseMediaItems.length > 0;
 
   useEffect(() => {
     let isCancelled = false;
@@ -50,7 +51,7 @@ export const useProjectGallery = (project) => {
         setThumbnailPublicId(fallbackThumbnailPublicId);
         setIsGalleryLoading(false);
         setGalleryError('');
-        setHasGalleryMedia(false);
+        setHasGalleryMedia(hasStaticMedia);
         return;
       }
 
@@ -65,7 +66,7 @@ export const useProjectGallery = (project) => {
         setThumbnailPublicId(staticThumbnailPublicId || publicIds[0] || fallbackThumbnailPublicId);
         setIsGalleryLoading(false);
         setGalleryError('');
-        setHasGalleryMedia(publicIds.length > 0);
+        setHasGalleryMedia(publicIds.length > 0 || hasStaticMedia);
         return;
       }
 
@@ -85,7 +86,7 @@ export const useProjectGallery = (project) => {
           setGalleryMediaItems([]);
           setThumbnailPublicId(fallbackThumbnailPublicId);
           setGalleryError(error?.message || 'Unable to load gallery right now.');
-          setHasGalleryMedia(false);
+          setHasGalleryMedia(hasStaticMedia);
         }
         return;
       } finally {
@@ -105,7 +106,7 @@ export const useProjectGallery = (project) => {
         setGalleryMediaItems([]);
         setThumbnailPublicId(fallbackThumbnailPublicId);
         setGalleryError('');
-        setHasGalleryMedia(false);
+        setHasGalleryMedia(hasStaticMedia);
         return;
       }
 
@@ -125,7 +126,13 @@ export const useProjectGallery = (project) => {
     return () => {
       isCancelled = true;
     };
-  }, [fallbackThumbnailPublicId, galleryFolderPath, galleryLabelPrefix, staticThumbnailPublicId]);
+  }, [
+    fallbackThumbnailPublicId,
+    galleryFolderPath,
+    galleryLabelPrefix,
+    hasStaticMedia,
+    staticThumbnailPublicId,
+  ]);
 
   const hasVideo = baseMediaItems.some((item) => item.type === 'video' && item.src);
 
