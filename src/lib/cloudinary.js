@@ -255,7 +255,7 @@ export const fetchCloudinaryFolderPublicIds = async (folderPath) => {
   const errors = [];
   const canUseBackendApi =
     Boolean(CLOUDINARY_API_BASE_URL) ||
-    (typeof window !== 'undefined' && window.location.hostname === 'localhost');
+    typeof window !== 'undefined';
 
   if (canUseBackendApi) {
     try {
