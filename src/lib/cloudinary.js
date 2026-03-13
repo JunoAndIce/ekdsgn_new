@@ -2,6 +2,8 @@ const CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME || 'demo';
 const CLOUDINARY_API_BASE_URL = process.env.REACT_APP_CLOUDINARY_API_BASE_URL || '';
 const CLOUDINARY_GALLERY_API_URL = process.env.REACT_APP_CLOUDINARY_GALLERY_API_URL || '';
 const CLOUDINARY_DEBUG = process.env.REACT_APP_CLOUDINARY_DEBUG === 'true';
+const CLOUDINARY_ALLOW_LIST_FALLBACK =
+  process.env.REACT_APP_CLOUDINARY_ALLOW_LIST_FALLBACK === 'true';
 
 const DEFAULT_WIDTH = 1400;
 const DEFAULT_QUALITY = 'auto';
@@ -77,7 +79,23 @@ const fetchFromBackendGalleryApi = async (folderPath) => {
     throw new Error(`Backend gallery request failed with status ${response.status}`);
   }
 
-  const payload = await response.json();
+  let payload;
+
+  try {
+    payload = await response.json();
+  } catch (error) {
+    recordCloudinaryApiCall({
+      source: 'backend-gallery',
+      folderPath,
+      url,
+      ok: false,
+      status: response.status,
+      count: 0,
+      error: `Backend gallery returned non-JSON response (${response.status})`,
+    });
+    throw new Error(`Backend gallery returned non-JSON response (${response.status})`);
+  }
+
   const publicIds = Array.isArray(payload?.publicIds)
     ? payload.publicIds.map((value) => String(value || '').trim()).filter(Boolean)
     : [];
@@ -256,12 +274,20 @@ export const fetchCloudinaryFolderPublicIds = async (folderPath) => {
   const canUseBackendApi =
     Boolean(CLOUDINARY_API_BASE_URL) ||
     typeof window !== 'undefined';
+  const isProductionBrowser =
+    typeof window !== 'undefined' && window.location.hostname !== 'localhost';
 
   if (canUseBackendApi) {
     try {
       return await fetchFromBackendGalleryApi(folderPath);
     } catch (error) {
       errors.push(error);
+
+      // In production we rely on the secure backend API instead of public list endpoints.
+      // This avoids 401 noise and keeps private folder visibility predictable.
+      if (isProductionBrowser && !CLOUDINARY_ALLOW_LIST_FALLBACK) {
+        throw new Error(error?.message || 'Backend gallery request failed.');
+      }
     }
   }
 
