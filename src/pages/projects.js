@@ -11,11 +11,6 @@ import projects, { defaultProjectKey, projectOrder } from '../data/projects';
 
 const ProjectSwitcherItem = ({ activeProjectKey, projectKey, onSelect }) => {
   const project = projects[projectKey];
-  const { hasGalleryMedia, isGalleryLoading } = useProjectGallery(project);
-
-  if (!isGalleryLoading && !hasGalleryMedia) {
-    return null;
-  }
 
   return (
     <button
@@ -37,7 +32,6 @@ const Projects = () => {
   const project = projects[activeProjectKey];
   const {
     hasVideo: projectHasVideo,
-    hasGalleryMedia,
     isGalleryLoading,
     galleryError,
     mediaItems,
@@ -58,13 +52,6 @@ const Projects = () => {
 
   if (!hasValidProject) {
     return <Navigate to={`/projects/${fallbackProjectKey}`} replace />;
-  }
-
-  if (!isGalleryLoading && !hasGalleryMedia) {
-    if (activeProjectKey !== fallbackProjectKey) {
-      return <Navigate to={`/projects/${fallbackProjectKey}`} replace />;
-    }
-    return null;
   }
 
   return (

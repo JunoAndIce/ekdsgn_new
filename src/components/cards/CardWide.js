@@ -6,11 +6,7 @@ import projects from '../../data/projects';
 
 const CardWide = ({ projectKey, name, meta, onOpenModal, placeholderIcon, placeholderClass }) => {
   const project = projects[projectKey];
-  const { hasGalleryMedia, isGalleryLoading, thumbnailPublicId } = useProjectGallery(project);
-
-  if (!isGalleryLoading && !hasGalleryMedia) {
-    return null;
-  }
+  const { thumbnailPublicId } = useProjectGallery(project);
 
   const imgId = resolveCloudinaryPublicId(thumbnailPublicId || project?.imgId);
   const iconToShow = placeholderIcon || project?.icon;
