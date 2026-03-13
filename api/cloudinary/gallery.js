@@ -89,11 +89,20 @@ module.exports = async (req, res) => {
       const resources = Array.isArray(payload?.resources) ? payload.resources : [];
 
       resources.forEach((resource) => {
-        const publicId = String(resource?.public_id || '').trim();
+        const rawId = String(resource?.public_id || '').trim();
 
-        if (publicId) {
-          ids.push(publicId);
+        if (!rawId) {
+          return;
         }
+
+        // Cloudinary search may return public IDs without the folder prefix
+        // when the account uses fixed-folder mode. Normalize to always include it.
+        const publicId =
+          rawId.startsWith(folderPath + '/') || rawId.startsWith(folderPath)
+            ? rawId
+            : `${folderPath}/${rawId}`;
+
+        ids.push(publicId);
       });
 
       nextCursor = payload?.next_cursor || null;
