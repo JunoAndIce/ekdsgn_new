@@ -64,7 +64,32 @@ if (typeof window !== 'undefined') {
 
 const fetchFromBackendGalleryApi = async (folderPath) => {
   const url = buildBackendUrl('cloudinary/gallery', { folderPath });
-  const response = await fetch(url);
+  recordCloudinaryApiCall({
+    source: 'backend-gallery-attempt',
+    folderPath,
+    url,
+    ok: true,
+    status: 0,
+    count: 0,
+    error: '',
+  });
+
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    recordCloudinaryApiCall({
+      source: 'backend-gallery',
+      folderPath,
+      url,
+      ok: false,
+      status: 0,
+      count: 0,
+      error: error?.message || 'Network error while reaching backend gallery endpoint',
+    });
+    throw error;
+  }
 
   if (!response.ok) {
     recordCloudinaryApiCall({
@@ -115,7 +140,32 @@ const fetchFromBackendGalleryApi = async (folderPath) => {
 
 export const fetchCloudinaryFolders = async (prefix = '') => {
   const url = buildBackendUrl('cloudinary/folders', { prefix });
-  const response = await fetch(url);
+  recordCloudinaryApiCall({
+    source: 'backend-folders-attempt',
+    folderPath: prefix,
+    url,
+    ok: true,
+    status: 0,
+    count: 0,
+    error: '',
+  });
+
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    recordCloudinaryApiCall({
+      source: 'backend-folders',
+      folderPath: prefix,
+      url,
+      ok: false,
+      status: 0,
+      count: 0,
+      error: error?.message || 'Network error while reaching backend folders endpoint',
+    });
+    throw error;
+  }
 
   if (!response.ok) {
     recordCloudinaryApiCall({
