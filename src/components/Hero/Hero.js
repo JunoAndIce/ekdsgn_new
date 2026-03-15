@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { imagePublicIds } from '../../data/imageData';
+import { imagePublicIds, resolveCloudinaryPublicId } from '../../data/imageData';
 import projects, { projectOrder } from '../../data/projects';
 import { useProjectGallery } from '../../hooks/useProjectGallery';
 import ResponsiveImage from '../media/ResponsiveImage';
@@ -18,10 +18,9 @@ const Hero = ({ onOpenModal }) => {
     featuredProjects[activeIndex] || featuredProjects[0] || { key: null, title: '', subtitle: '' };
   const activeProjectData = activeProject.key ? projects[activeProject.key] : null;
   const { thumbnailPublicId } = useProjectGallery(activeProjectData);
-  const activeImageId =
-    thumbnailPublicId ||
-    imagePublicIds[activeProject.key] ||
-    imagePublicIds.bottega;
+  const activeImageId = resolveCloudinaryPublicId(
+    thumbnailPublicId || imagePublicIds[activeProject.key] || imagePublicIds.bottega
+  );
 
   useEffect(() => {
     const handleScroll = () => {

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { fetchCloudinaryFolderPublicIds } from '../lib/cloudinary';
-import { resolveCloudinaryPublicId } from '../data/imageData';
 
 const galleryCache = new Map();
 const inflightGalleryRequests = new Map();
@@ -15,20 +14,8 @@ const createGalleryMediaItems = ({ publicIds, labelPrefix }) =>
 
 const getFallbackThumbnail = (project) => project?.thumbnailPublicId || project?.imgId || null;
 
-const inferFolderPathFromPublicId = (publicId) => {
-  const value = String(publicId || '').trim();
-
-  if (!value.includes('/')) {
-    return '';
-  }
-
-  return value.split('/').slice(0, -1).join('/');
-};
-
 export const useProjectGallery = (project) => {
-  const fallbackImagePublicId = resolveCloudinaryPublicId(project?.imgId);
-  const galleryFolderPath =
-    project?.galleryFolderPath || inferFolderPathFromPublicId(fallbackImagePublicId);
+  const galleryFolderPath = project?.galleryFolderPath || '';
   const galleryLabelPrefix = project?.galleryLabelPrefix;
   const staticThumbnailPublicId = project?.thumbnailPublicId;
   const baseMediaItems = project?.media || [];
