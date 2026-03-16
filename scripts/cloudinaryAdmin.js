@@ -300,19 +300,21 @@ const buildGalleryManifest = async ({ folderPaths, config }) => {
 const deriveProjectFromFolder = (folderPath, publicIds, index) => {
   const segments = String(folderPath || '').split('/').filter(Boolean);
   const folderName = segments[segments.length - 1] || `folder-${index + 1}`;
-  const categoryRaw = segments.length > 1 ? segments[segments.length - 2] : 'cloudinary';
-  const category = toSlug(categoryRaw) || 'cloudinary';
+  const groupSegment = segments.length > 1 ? segments[1] : segments[0] || 'cloudinary';
+  const groupLabel = toTitleCase(groupSegment) || 'Cloudinary';
+  const category = toSlug(groupSegment) || 'cloudinary';
   const id = toSlug(folderPath.replace(/\//g, '-')) || `project-${index + 1}`;
   const title = toTitleCase(folderName) || `Project ${index + 1}`;
-  const tags = segments.map((segment) => toTitleCase(segment)).filter(Boolean);
+  const tags = [groupLabel, 'Cloudinary'];
 
   return {
     id,
     category,
     featured: index < 6,
     title,
-    meta: folderPath,
-    description: `Auto-generated from Cloudinary folder: ${folderPath}`,
+    groupName: groupLabel,
+    meta: groupLabel,
+    description: `${groupLabel} project gallery`,
     tags,
     publicIds,
     folderPath,

@@ -138,10 +138,6 @@ const Projects = () => {
                     <span className="project-detail-label">Category</span>
                     <span className="project-detail-value">{project.meta}</span>
                   </div>
-                  <div className="project-detail-row">
-                    <span className="project-detail-label">Folder</span>
-                    <span className="project-detail-value">{project.folderPath}</span>
-                  </div>
                 </div>
               </section>
 
