@@ -1,12 +1,48 @@
 const fs = require('fs/promises');
+const fsSync = require('fs');
 const path = require('path');
 const { buildGalleryManifest, getCloudinaryAdminConfigFromEnv } = require('./cloudinaryAdmin');
 
 const rootDir = path.resolve(__dirname, '..');
 const projectsPath = path.join(rootDir, 'src', 'data', 'projects.json');
 const manifestPath = path.join(rootDir, 'src', 'data', 'cloudinaryGalleryManifest.json');
+const envPath = path.join(rootDir, '.env');
+
+const loadLocalEnvFile = () => {
+  if (!fsSync.existsSync(envPath)) {
+    return;
+  }
+
+  const envContents = fsSync.readFileSync(envPath, 'utf8');
+  const lines = envContents.split(/\r?\n/);
+
+  lines.forEach((line) => {
+    const trimmed = String(line || '').trim();
+
+    if (!trimmed || trimmed.startsWith('#')) {
+      return;
+    }
+
+    const equalsIndex = trimmed.indexOf('=');
+
+    if (equalsIndex <= 0) {
+      return;
+    }
+
+    const key = trimmed.slice(0, equalsIndex).trim();
+    const value = trimmed.slice(equalsIndex + 1).trim();
+
+    if (!key || process.env[key]) {
+      return;
+    }
+
+    process.env[key] = value;
+  });
+};
 
 const run = async () => {
+  loadLocalEnvFile();
+
   const projectsRaw = await fs.readFile(projectsPath, 'utf8');
   const projects = JSON.parse(projectsRaw);
 
