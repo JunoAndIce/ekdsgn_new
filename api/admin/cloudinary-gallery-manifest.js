@@ -1,6 +1,5 @@
 const crypto = require('crypto');
-const projects = require('../../src/data/projects.json');
-const { buildGalleryManifest, getCloudinaryAdminConfigFromEnv } = require('../../scripts/cloudinaryAdmin');
+const { buildCloudinaryProjectsSnapshot, getCloudinaryAdminConfigFromEnv } = require('../../scripts/cloudinaryAdmin');
 
 const isAuthorized = (request, secretToken) => {
   const authHeader = String(request.headers?.authorization || '');
@@ -38,7 +37,9 @@ module.exports = async (req, res) => {
 
   try {
     const config = getCloudinaryAdminConfigFromEnv(process.env);
-    const manifest = await buildGalleryManifest({ projects, config });
+    const prefix = String(process.env.CLOUDINARY_PROJECTS_PREFIX || '').trim();
+    const includeEmptyFolders = String(process.env.CLOUDINARY_INCLUDE_EMPTY_FOLDERS || '').trim().toLowerCase() === 'true';
+    const manifest = await buildCloudinaryProjectsSnapshot({ config, prefix, includeEmptyFolders });
 
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(manifest);

@@ -1,23 +1,43 @@
-import projectsData from './projects.json';
+import cloudinaryProjectsData from './cloudinaryProjects.json';
 
-export const projectCards = projectsData
+const rawProjects = Array.isArray(cloudinaryProjectsData?.projects)
+  ? cloudinaryProjectsData.projects
+  : [];
+
+const toLabel = (value) => String(value || '')
+  .split(/[-_\s]+/)
+  .filter(Boolean)
+  .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+  .join(' ');
+
+const categoryEmojiMap = {
+  creativedir: '🎬',
+  creative: '🎬',
+  projects: '🗂️',
+  videography: '📽️',
+  graphic: '✏️',
+  logos: '⬡',
+  cloudinary: '☁️',
+};
+
+export const projectCards = rawProjects
   .map((project) => ({
     id: String(project.id || '').trim(),
     title: String(project.title || '').trim(),
-    meta: String(project.meta || '').trim(),
+    meta: String(project.meta || project.folderPath || '').trim(),
     description: String(project.description || '').trim(),
-    category: String(project.category || 'all').trim(),
+    category: String(project.category || 'cloudinary').trim(),
     featured: Boolean(project.featured),
     tags: Array.isArray(project.tags) ? project.tags.map((tag) => String(tag || '').trim()).filter(Boolean) : [],
     publicIds: Array.isArray(project.publicIds)
       ? project.publicIds.map((id) => String(id || '').trim()).filter(Boolean)
       : [],
     folderPath: String(project.folderPath || '').trim(),
-    fallbackPublicId: String(project.fallbackPublicId || '').trim(),
+    fallbackPublicId: String(project.fallbackPublicId || project.publicIds?.[0] || '').trim(),
     placeholderIcon: String(project.placeholderIcon || '').trim(),
     placeholderClass: String(project.placeholderClass || '').trim(),
   }))
-  .filter((project) => project.id && project.title && (project.folderPath || project.publicIds.length));
+  .filter((project) => project.id && project.title && project.publicIds.length > 0);
 
 export const projectsById = Object.fromEntries(
   projectCards.map((project) => [project.id, project])
@@ -25,16 +45,21 @@ export const projectsById = Object.fromEntries(
 
 export const defaultProjectKey = projectCards[0]?.id || '';
 
-export const featuredProjectOrder = projectCards
+const explicitFeaturedOrder = projectCards
   .filter((project) => project.featured)
   .map((project) => project.id);
 
-export const categoryDefinitions = [
-  { id: 'creative-direction', label: 'Creative Direction', emoji: '🎬' },
-  { id: 'graphic-design', label: 'Graphic Design', emoji: '✏️' },
-  { id: 'videography', label: 'Videography', emoji: '📽️' },
-  { id: 'logos', label: 'Logos', emoji: '⬡' },
-];
+export const featuredProjectOrder = explicitFeaturedOrder.length
+  ? explicitFeaturedOrder
+  : projectCards.slice(0, 6).map((project) => project.id);
+
+const categoryIds = Array.from(new Set(projectCards.map((project) => project.category))).filter(Boolean);
+
+export const categoryDefinitions = categoryIds.map((id) => ({
+  id,
+  label: toLabel(id),
+  emoji: categoryEmojiMap[id] || '☁️',
+}));
 
 export const projectsBySection = categoryDefinitions.map((category) => ({
   ...category,

@@ -28,6 +28,24 @@ const Projects = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [activeProjectKey]);
 
+  if (!projectCards.length) {
+    return (
+      <>
+        <Navbar />
+        <main className="main project-page">
+          <section className="project-shell">
+            <section className="project-card">
+              <div className="project-card-kicker">Cloudinary</div>
+              <h2 className="project-card-title">No Projects Found</h2>
+              <p className="project-copy project-copy-lead">No folders with images were discovered in Cloudinary for this build.</p>
+            </section>
+          </section>
+          <Footer />
+        </main>
+      </>
+    );
+  }
+
   if (!hasValidProject || !project) {
     return <Navigate to={`/projects/${fallbackProjectKey}`} replace />;
   }
@@ -97,7 +115,7 @@ const Projects = () => {
                 <ProjectMediaCarousel
                   mediaItems={mediaItems}
                   projectTitle={project.title}
-                  fallbackPublicId={thumbnailPublicId || project.fallbackPublicId}
+                  fallbackPublicId={thumbnailPublicId}
                   fallbackIcon={project.placeholderIcon || '✦'}
                   fallbackClassName={project.placeholderClass || ''}
                 />

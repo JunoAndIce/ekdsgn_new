@@ -1,11 +1,11 @@
 const fs = require('fs/promises');
 const fsSync = require('fs');
 const path = require('path');
-const { buildGalleryManifest, getCloudinaryAdminConfigFromEnv } = require('./cloudinaryAdmin');
+const { buildCloudinaryProjectsSnapshot, getCloudinaryAdminConfigFromEnv } = require('./cloudinaryAdmin');
 
 const rootDir = path.resolve(__dirname, '..');
-const projectsPath = path.join(rootDir, 'src', 'data', 'projects.json');
 const manifestPath = path.join(rootDir, 'src', 'data', 'cloudinaryGalleryManifest.json');
+const generatedProjectsPath = path.join(rootDir, 'src', 'data', 'cloudinaryProjects.json');
 const envPath = path.join(rootDir, '.env');
 
 const loadLocalEnvFile = () => {
@@ -43,19 +43,34 @@ const loadLocalEnvFile = () => {
 const run = async () => {
   loadLocalEnvFile();
 
-  const projectsRaw = await fs.readFile(projectsPath, 'utf8');
-  const projects = JSON.parse(projectsRaw);
-
   const config = getCloudinaryAdminConfigFromEnv(process.env);
-  const manifest = await buildGalleryManifest({ projects, config });
+  const prefix = String(process.env.CLOUDINARY_PROJECTS_PREFIX || '').trim();
+  const includeEmptyFolders = String(process.env.CLOUDINARY_INCLUDE_EMPTY_FOLDERS || '').trim().toLowerCase() === 'true';
+  const snapshot = await buildCloudinaryProjectsSnapshot({ config, prefix, includeEmptyFolders });
+  const manifest = {
+    generatedAt: snapshot.generatedAt,
+    source: snapshot.source,
+    galleries: snapshot.galleries,
+  };
+  const generatedProjects = {
+    generatedAt: snapshot.generatedAt,
+    source: snapshot.source,
+    projectPrefix: snapshot.projectPrefix,
+    projects: snapshot.projects,
+  };
 
   await fs.writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
+  await fs.writeFile(generatedProjectsPath, `${JSON.stringify(generatedProjects, null, 2)}\n`, 'utf8');
 
-  const galleryCount = Object.keys(manifest.galleries).length;
-  const imageCount = Object.values(manifest.galleries).reduce((sum, ids) => sum + ids.length, 0);
+  const folderCount = snapshot.folders.length;
+  const galleryCount = Object.keys(snapshot.galleries).length;
+  const projectCount = snapshot.projects.length;
+  const imageCount = Object.values(snapshot.galleries).reduce((sum, ids) => sum + ids.length, 0);
 
+  console.log(`Discovered ${folderCount} folders and generated ${projectCount} projects.`);
   console.log(`Generated ${galleryCount} galleries with ${imageCount} images total.`);
   console.log(`Wrote ${manifestPath}`);
+  console.log(`Wrote ${generatedProjectsPath}`);
 };
 
 run().catch((error) => {

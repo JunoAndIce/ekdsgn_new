@@ -50,17 +50,21 @@ const Hero = ({ onOpenModal }) => {
   return (
     <div className="hero">
       <div className="hero-slide">
-        <ResponsiveImage
-          className="hero-img"
-          publicId={thumbnailPublicId || projectData?.fallbackPublicId}
-          alt={activeProject.title}
-          loading="eager"
-          fetchPriority="high"
-          sizes="100vw"
-          width={1800}
-          style={{ transform: 'scale(1.04)' }}
-          ref={heroImgRef}
-        />
+        {thumbnailPublicId ? (
+          <ResponsiveImage
+            className="hero-img"
+            publicId={thumbnailPublicId}
+            alt={activeProject.title}
+            loading="eager"
+            fetchPriority="high"
+            sizes="100vw"
+            width={1800}
+            style={{ transform: 'scale(1.04)' }}
+            ref={heroImgRef}
+          />
+        ) : (
+          <div className="hero-img" ref={heroImgRef}></div>
+        )}
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <div className="emoji-badge">✦ Featured Project</div>
