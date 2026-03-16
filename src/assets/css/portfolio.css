@@ -252,12 +252,6 @@ html, body {
   font-size: 15px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.section-see-all {
-  font-size: 14px; color: var(--blue);
-  background: none; border: none;
-  cursor: pointer; font-weight: 400;
-  letter-spacing: -0.1px;
-}
 
 /* ─── SCROLL ROW ─── */
 .scroll-row {

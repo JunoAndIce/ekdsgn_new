@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { resolveCloudinaryPublicId } from '../../data/imageData';
 import { useProjectGallery } from '../../hooks/useProjectGallery';
 import ResponsiveImage from '../media/ResponsiveImage';
-import projects from '../../data/projects';
 
-const Modal = ({ isOpen, projectKey, onClose }) => {
+const Modal = ({ isOpen, project, onClose }) => {
   const overlayRef = useRef(null);
   const navigate = useNavigate();
-  // Separate visible/open so close animation can play before unmounting
   const [visible, setVisible] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -17,32 +14,38 @@ const Modal = ({ isOpen, projectKey, onClose }) => {
       setVisible(true);
       requestAnimationFrame(() => setOpen(true));
       document.body.style.overflow = 'hidden';
-    } else {
-      setOpen(false);
-      const timer = setTimeout(() => {
-        setVisible(false);
-        document.body.style.overflow = '';
-      }, 400);
-      return () => clearTimeout(timer);
+      return undefined;
     }
+
+    setOpen(false);
+    const timer = setTimeout(() => {
+      setVisible(false);
+      document.body.style.overflow = '';
+    }, 400);
+
+    return () => clearTimeout(timer);
   }, [isOpen]);
 
-  const project = projectKey ? projects[projectKey] : null;
   const { thumbnailPublicId } = useProjectGallery(project);
-  const imgId = resolveCloudinaryPublicId(thumbnailPublicId || project?.imgId);
 
-  const handleOverlayClick = (e) => {
-    if (e.target === overlayRef.current) {
+  const handleOverlayClick = (event) => {
+    if (event.target === overlayRef.current) {
       onClose();
     }
   };
 
   const handleViewProject = () => {
+    if (!project?.id) {
+      return;
+    }
+
     onClose();
-    navigate(`/projects/${projectKey}`);
+    navigate(`/projects/${project.id}`);
   };
 
-  if (!visible || !project) return null;
+  if (!visible || !project) {
+    return null;
+  }
 
   return (
     <div
@@ -55,35 +58,29 @@ const Modal = ({ isOpen, projectKey, onClose }) => {
         <div className="modal-handle"></div>
         <button className="modal-close-btn" onClick={onClose}>✕</button>
 
-        {imgId ? (
+        {thumbnailPublicId ? (
           <ResponsiveImage
             className="modal-hero"
-            publicId={imgId}
+            publicId={thumbnailPublicId}
             alt={project.title}
             sizes="(max-width: 768px) 100vw, 900px"
             width={1400}
-            style={{
-              display: 'block',
-              objectFit: project.imgId === 'ek' ? 'contain' : 'cover',
-              background: project.imgId === 'ek' ? '#000' : '',
-              padding: project.imgId === 'ek' ? '30px' : '',
-            }}
           />
         ) : (
           <div
-            className={`modal-hero-placeholder ${project.color || ''}`}
+            className={`modal-hero-placeholder ${project.placeholderClass || ''}`}
             style={{ display: 'flex', width: '100%', height: '200px', marginTop: '12px', alignItems: 'center', justifyContent: 'center' }}
           >
-            <div style={{ fontSize: '60px', opacity: 0.25 }}>{project.icon || '✦'}</div>
+            <div style={{ fontSize: '60px', opacity: 0.25 }}>{project.placeholderIcon || '✦'}</div>
           </div>
         )}
 
         <div className="modal-body">
-          <div className="modal-category">{project.category}</div>
+          <div className="modal-category">{project.meta}</div>
           <div className="modal-title">{project.title}</div>
-          <div className="modal-desc">{project.desc}</div>
+          <div className="modal-desc">{project.description || 'Project details available in full view.'}</div>
           <div className="modal-tags">
-            {project.tags.map((tag) => (
+            {(project.tags || []).map((tag) => (
               <span key={tag} className="modal-tag">{tag}</span>
             ))}
           </div>

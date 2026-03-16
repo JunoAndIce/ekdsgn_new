@@ -44,94 +44,89 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 This project uses:
 
 - Cloudinary for responsive image delivery (`src/components/media/ResponsiveImage.js`)
-- Runtime folder gallery loading directly from Cloudinary list endpoints
-- Optional proxy API fallback for private/locked-down Cloudinary setups
+- Server-side gallery manifest generation from Cloudinary Admin API
 
 Create a `.env` file in the project root with:
 
 ```bash
 REACT_APP_CLOUDINARY_CLOUD_NAME=your_cloud_name
-REACT_APP_CLOUDINARY_API_BASE_URL=https://your-backend.example.com/api
+
+# Server-only Cloudinary Admin credentials
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET_BASE64=your_base64_encoded_api_secret
+
+# Server-only token for protected admin manifest endpoint
+CLOUDINARY_MANIFEST_SYNC_TOKEN=your_random_long_token
 
 # Optional mp4 URLs for project videos
 REACT_APP_BOTTEGA_VIDEO_MP4=https://your-cdn/video.mp4
 REACT_APP_SELECT_VIDEO_MP4=https://your-cdn/video.mp4
+```
 
-# Optional: only needed if Cloudinary list endpoint is restricted
-REACT_APP_CLOUDINARY_GALLERY_API_URL=https://your-api.example.com/cloudinary/gallery
+Encode your API secret as Base64 before adding it to `.env`.
 
-# Optional: logs each Cloudinary/gallery request in browser console
-REACT_APP_CLOUDINARY_DEBUG=true
+PowerShell:
+
+```powershell
+[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes("your_cloudinary_api_secret"))
+```
+
+Node:
+
+```bash
+node -e "console.log(Buffer.from('your_cloudinary_api_secret','utf8').toString('base64'))"
 ```
 
 Cloudinary public IDs are mapped in `src/data/imageData.js`.
 
-Project media definitions and folder mappings are in `src/data/projects.js`.
+Project card definitions are in `src/data/projects.json`.
 
-`REACT_APP_CLOUDINARY_GALLERY_API_URL` is optional and only used as a fallback when direct list requests are not available.
+For each project card, only these fields are required:
 
-For direct folder pulling, ensure your Cloudinary account allows public list access for the folders/images you expect to render.
+- `id`
+- `title`
+- `meta`
+- `folderPath`
 
-## Cloudinary Backend API
-
-This repo now includes serverless backend handlers for authenticated Cloudinary Admin API access:
-
-1. `api/cloudinary/health.js` verifies deployment and env presence.
-1. `api/cloudinary/folders.js` lists folders.
-1. `api/cloudinary/gallery.js` returns all `publicIds` for one folder.
-
-Backend environment variables:
+Generate the gallery manifest with:
 
 ```bash
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_admin_api_key
-CLOUDINARY_API_SECRET=your_admin_api_secret
+npm run sync:cloudinary-galleries
 ```
 
-Example endpoints:
+This writes `src/data/cloudinaryGalleryManifest.json` from Cloudinary Admin API responses.
 
-1. `GET /api/cloudinary/health`
-1. `GET /api/cloudinary/folders?prefix=ek/creativedir`
-1. `GET /api/cloudinary/gallery?folderPath=ek/creativedir/powerade`
+The build process runs this automatically via `prebuild`, so deployments always compile with fresh server-generated gallery JSON.
 
-Frontend hooks:
+Protected admin endpoint:
 
-1. `useProjectGallery(project)` in `src/hooks/useProjectGallery.js` loads media for a project folder and maps discovered `publicIds` to carousel items.
-2. `useCloudinaryFolders({ prefix })` in `src/hooks/useCloudinaryFolders.js` loads the folder index for dynamic project/folder matching.
+- `GET /api/admin/cloudinary-gallery-manifest`
+- Requires `Authorization: Bearer <CLOUDINARY_MANIFEST_SYNC_TOKEN>`
+- Never exposes Admin credentials to the browser
 
-## Vercel Full-Stack Deployment
+Security notes:
 
-This repo is configured for full-stack Vercel deployment:
+- Never prefix admin credentials with `REACT_APP_`.
+- Keep `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET_BASE64`, and `CLOUDINARY_MANIFEST_SYNC_TOKEN` only in server-side environment variables.
+- The manifest generator uses only folder paths defined in `src/data/projects.json` (no arbitrary user-supplied folder queries).
 
-1. Frontend: Create React App static build from `build/`.
-2. Backend: serverless functions from `api/`.
+## Vercel Frontend Deployment
+
+This repo is configured for static frontend deployment on Vercel.
 
 Deploy steps:
 
 1. Import this repo into Vercel.
 2. Keep the project root at the repository root.
 3. Add Vercel environment variables:
-   - `CLOUDINARY_CLOUD_NAME`
-   - `CLOUDINARY_API_KEY`
-   - `CLOUDINARY_API_SECRET`
+   - `REACT_APP_CLOUDINARY_CLOUD_NAME`
+   - `REACT_APP_BOTTEGA_VIDEO_MP4` (optional)
+   - `REACT_APP_SELECT_VIDEO_MP4` (optional)
 4. Deploy.
-5. Verify frontend and API:
-   - `/`
-   - `/api/cloudinary/health`
-   - `/api/cloudinary/folders?prefix=ek/creativedir`
-6. Set frontend API base URL for production to same-origin API:
-   - `REACT_APP_CLOUDINARY_API_BASE_URL=/api`
+5. Verify frontend is live at `/`.
 
 SPA routing is handled by `vercel.json` so deep links resolve to `index.html`.
-
-## Inspect Cloudinary Calls
-
-To see everything called from Cloudinary/gallery sources:
-
-1. Open browser dev tools -> Network.
-2. Filter by `res.cloudinary.com` or your proxy URL.
-3. In Console, run `window.__cloudinaryApiCallLog()` to see request history 2. Keep the project root at the repository root.(source, folderPath, status, count, timestamp).
-4. Run `window.__clearCloudinaryApiCallLog()` to reset the history.
 
 ## Learn More
 

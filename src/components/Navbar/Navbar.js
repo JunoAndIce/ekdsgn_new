@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { imagePublicIds } from '../../data/imageData';
 import ResponsiveImage from '../media/ResponsiveImage';
-import { defaultProjectKey } from '../../data/projects';
 
 const navItems = [
   {
@@ -12,13 +11,8 @@ const navItems = [
   },
   {
     label: 'Projects',
-    to: `/projects/${defaultProjectKey}`,
+    to: '/projects',
     isActive: (pathname) => pathname.startsWith('/projects'),
-  },
-  {
-    label: 'Featured',
-    to: `/projects/${defaultProjectKey}`,
-    isActive: () => false,
   },
   {
     label: 'About',

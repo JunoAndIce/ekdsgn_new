@@ -1,103 +1,40 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { resolveCloudinaryImageUrl, resolveCloudinaryPublicId } from '../../data/imageData';
 import ResponsiveImage from './ResponsiveImage';
 
-const normalizeMediaItems = ({ mediaItems, fallbackPublicId, fallbackLabel }) => {
-  const normalizedItems = (mediaItems || [])
-    .map((item, index) => {
-      if (item.type === 'video') {
-        if (!item.src) {
-          return null;
-        }
+const ProjectMediaCarousel = ({ mediaItems = [], projectTitle, fallbackPublicId, fallbackIcon = '✦', fallbackClassName = '' }) => {
+  const items = useMemo(() => {
+    if (mediaItems.length) {
+      return mediaItems;
+    }
 
-        return {
-          ...item,
-          id: item.id || `video-${index}`,
-          posterPublicId: resolveCloudinaryPublicId(
-            item.posterPublicId || item.posterImgId || fallbackPublicId
-          ),
-        };
-      }
+    if (!fallbackPublicId) {
+      return [];
+    }
 
-      const publicId = resolveCloudinaryPublicId(item.publicId || item.imgId || fallbackPublicId);
-
-      if (!publicId) {
-        return null;
-      }
-
-      return {
-        ...item,
-        id: item.id || `image-${index}`,
-        type: 'image',
-        publicId,
-      };
-    })
-    .filter(Boolean);
-
-  if (normalizedItems.length) {
-    return normalizedItems;
-  }
-
-  const resolvedFallbackPublicId = resolveCloudinaryPublicId(fallbackPublicId);
-
-  if (!resolvedFallbackPublicId) {
-    return [];
-  }
-
-  return [
-    {
-      id: 'fallback-image',
+    return [{
+      id: 'fallback-media',
       type: 'image',
-      publicId: resolvedFallbackPublicId,
-      label: fallbackLabel,
-    },
-  ];
-};
+      publicId: fallbackPublicId,
+      label: `${projectTitle} cover`,
+    }];
+  }, [fallbackPublicId, mediaItems, projectTitle]);
 
-const ProjectMediaCarousel = ({
-  mediaItems,
-  projectTitle,
-  fallbackPublicId,
-  fallbackLabel = 'Primary project media',
-  fallbackIcon = '✦',
-  fallbackClassName = '',
-}) => {
-  const normalizedMediaItems = useMemo(
-    () => normalizeMediaItems({ mediaItems, fallbackPublicId, fallbackLabel }),
-    [fallbackLabel, fallbackPublicId, mediaItems]
-  );
-  const defaultMediaIndex = useMemo(() => {
-    const videoIndex = normalizedMediaItems.findIndex((item) => item.type === 'video');
-
-    return videoIndex >= 0 ? videoIndex : 0;
-  }, [normalizedMediaItems]);
-  const [activeMediaIndex, setActiveMediaIndex] = useState(defaultMediaIndex);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    setActiveMediaIndex(defaultMediaIndex);
-  }, [defaultMediaIndex]);
+    setActiveIndex(0);
+  }, [items]);
 
-  const activeMedia = normalizedMediaItems[activeMediaIndex] || normalizedMediaItems[0] || null;
+  const activeItem = items[activeIndex] || null;
 
   return (
     <>
       <div className="project-media-stage">
-        {activeMedia?.type === 'video' ? (
-          // Keep native video for now; reintroduce provider-specific player here later if needed.
-          <video
-            className="project-media-asset"
-            controls
-            playsInline
-            preload="metadata"
-            poster={resolveCloudinaryImageUrl(activeMedia.posterPublicId, { width: 1600 }) || undefined}
-          >
-            <source src={activeMedia.src} type="video/mp4" />
-          </video>
-        ) : activeMedia?.publicId ? (
+        {activeItem?.publicId ? (
           <ResponsiveImage
             className="project-media-asset"
-            publicId={activeMedia.publicId}
-            alt={activeMedia.label || projectTitle}
+            publicId={activeItem.publicId}
+            alt={activeItem.label || projectTitle}
             sizes="(max-width: 900px) 100vw, 900px"
             width={1600}
           />
@@ -109,24 +46,21 @@ const ProjectMediaCarousel = ({
       </div>
 
       <div className="project-media-meta">
-        <div className="project-media-caption">{activeMedia?.label || fallbackLabel}</div>
-        {normalizedMediaItems.length > 1 ? (
-          <div className="project-media-counter">
-            {activeMediaIndex + 1} / {normalizedMediaItems.length}
-          </div>
+        <div className="project-media-caption">{activeItem?.label || projectTitle}</div>
+        {items.length > 1 ? (
+          <div className="project-media-counter">{activeIndex + 1} / {items.length}</div>
         ) : null}
       </div>
 
-      {normalizedMediaItems.length > 1 ? (
+      {items.length > 1 ? (
         <div className="project-media-dots" aria-label={`${projectTitle} media navigation`}>
-          {normalizedMediaItems.map((item, index) => (
+          {items.map((item, index) => (
             <button
               key={item.id}
-              className={`project-media-dot${index === activeMediaIndex ? ' active' : ''}`}
+              className={`project-media-dot${index === activeIndex ? ' active' : ''}`}
               aria-label={`Show ${item.label || `${projectTitle} media ${index + 1}`}`}
-              aria-pressed={index === activeMediaIndex}
-              onClick={() => setActiveMediaIndex(index)}
-              title={item.label || `${projectTitle} media ${index + 1}`}
+              aria-pressed={index === activeIndex}
+              onClick={() => setActiveIndex(index)}
               type="button"
             />
           ))}

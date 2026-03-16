@@ -1,134 +1,98 @@
-import { useEffect, useState } from 'react';
-import { fetchCloudinaryFolderPublicIds } from '../lib/cloudinary';
+import { useEffect, useMemo, useState } from 'react';
+import cloudinaryGalleryManifest from '../data/cloudinaryGalleryManifest.json';
 
 const galleryCache = new Map();
-const inflightGalleryRequests = new Map();
 
-const createGalleryMediaItems = ({ publicIds, labelPrefix }) =>
+const getManifestPublicIds = (folderPath) => {
+  const galleries = cloudinaryGalleryManifest?.galleries;
+  const galleryItems = galleries ? galleries[folderPath] : [];
+  return Array.isArray(galleryItems)
+    ? galleryItems.map((id) => String(id || '').trim()).filter(Boolean)
+    : [];
+};
+
+const buildMediaItems = (publicIds = [], title = 'Project') =>
   publicIds.map((publicId, index) => ({
-    id: `gallery-${publicId}-${index}`,
+    id: `${publicId}-${index}`,
     type: 'image',
     publicId,
-    label: `${labelPrefix || 'Gallery image'} ${index + 1}`,
+    label: `${title} ${index + 1}`,
   }));
 
-const getFallbackThumbnail = (project) => project?.thumbnailPublicId || project?.imgId || null;
-
 export const useProjectGallery = (project) => {
-  const galleryFolderPath = project?.galleryFolderPath || '';
-  const galleryLabelPrefix = project?.galleryLabelPrefix;
-  const staticThumbnailPublicId = project?.thumbnailPublicId;
-  const baseMediaItems = project?.media || [];
-  const [galleryMediaItems, setGalleryMediaItems] = useState([]);
-  const [thumbnailPublicId, setThumbnailPublicId] = useState(getFallbackThumbnail(project));
+  const folderPath = String(project?.folderPath || '').trim();
+  const fallbackPublicId = String(project?.fallbackPublicId || '').trim();
+  const configuredPublicIds = useMemo(
+    () => (Array.isArray(project?.publicIds)
+      ? project.publicIds.map((id) => String(id || '').trim()).filter(Boolean)
+      : []),
+    [project?.publicIds]
+  );
+
+  const [thumbnailPublicId, setThumbnailPublicId] = useState(fallbackPublicId);
+  const [mediaItems, setMediaItems] = useState(
+    fallbackPublicId
+      ? [{ id: `${project?.id || 'fallback'}-fallback`, type: 'image', publicId: fallbackPublicId, label: project?.title || 'Project' }]
+      : []
+  );
   const [isGalleryLoading, setIsGalleryLoading] = useState(false);
   const [galleryError, setGalleryError] = useState('');
-  const [hasGalleryMedia, setHasGalleryMedia] = useState(false);
-  const fallbackThumbnailPublicId = getFallbackThumbnail(project);
-  const hasStaticMedia = Boolean(fallbackThumbnailPublicId) || baseMediaItems.length > 0;
 
   useEffect(() => {
-    let isCancelled = false;
+    let cancelled = false;
 
     const loadGallery = async () => {
-      const folderPath = galleryFolderPath;
+      if (configuredPublicIds.length) {
+        const media = buildMediaItems(configuredPublicIds, project?.title || 'Project');
+        setThumbnailPublicId(configuredPublicIds[0] || fallbackPublicId);
+        setMediaItems(media);
+        setGalleryError('');
+        setIsGalleryLoading(false);
+        return;
+      }
 
       if (!folderPath) {
-        setGalleryMediaItems([]);
-        setThumbnailPublicId(fallbackThumbnailPublicId);
-        setIsGalleryLoading(false);
-        setGalleryError('');
-        setHasGalleryMedia(hasStaticMedia);
-        return;
-      }
-
-      if (galleryCache.has(folderPath)) {
-        const publicIds = galleryCache.get(folderPath);
-        setGalleryMediaItems(
-          createGalleryMediaItems({
-            publicIds,
-            labelPrefix: galleryLabelPrefix,
-          })
+        setThumbnailPublicId(fallbackPublicId);
+        setMediaItems(
+          fallbackPublicId
+            ? [{ id: `${project?.id || 'fallback'}-fallback`, type: 'image', publicId: fallbackPublicId, label: project?.title || 'Project' }]
+            : []
         );
-        setThumbnailPublicId(staticThumbnailPublicId || publicIds[0] || fallbackThumbnailPublicId);
+        setGalleryError('');
         setIsGalleryLoading(false);
-        setGalleryError('');
-        setHasGalleryMedia(publicIds.length > 0 || hasStaticMedia);
         return;
       }
 
-      setIsGalleryLoading(true);
-      setGalleryError('');
+      const cachedPublicIds = galleryCache.has(folderPath)
+        ? galleryCache.get(folderPath) || []
+        : getManifestPublicIds(folderPath);
 
-      const request =
-        inflightGalleryRequests.get(folderPath) || fetchCloudinaryFolderPublicIds(folderPath);
-      inflightGalleryRequests.set(folderPath, request);
+      galleryCache.set(folderPath, cachedPublicIds);
 
-      let publicIds = [];
-
-      try {
-        publicIds = await request;
-      } catch (error) {
-        if (!isCancelled) {
-          setGalleryMediaItems([]);
-          setThumbnailPublicId(fallbackThumbnailPublicId);
-          setGalleryError(error?.message || 'Unable to load gallery right now.');
-          setHasGalleryMedia(hasStaticMedia);
-        }
-        return;
-      } finally {
-        inflightGalleryRequests.delete(folderPath);
-        if (!isCancelled) {
-          setIsGalleryLoading(false);
-        }
-      }
-
-      galleryCache.set(folderPath, publicIds);
-
-      if (isCancelled) {
-        return;
-      }
-
-      if (!publicIds.length) {
-        setGalleryMediaItems([]);
-        setThumbnailPublicId(fallbackThumbnailPublicId);
-        setGalleryError('');
-        setHasGalleryMedia(hasStaticMedia);
-        return;
-      }
-
-      setGalleryMediaItems(
-        createGalleryMediaItems({
-          publicIds,
-          labelPrefix: galleryLabelPrefix,
-        })
+      const media = buildMediaItems(cachedPublicIds, project?.title || 'Project');
+      setThumbnailPublicId(cachedPublicIds[0] || fallbackPublicId);
+      setMediaItems(
+        media.length
+          ? media
+          : fallbackPublicId
+            ? [{ id: `${project?.id || 'fallback'}-fallback`, type: 'image', publicId: fallbackPublicId, label: project?.title || 'Project' }]
+            : []
       );
-      setThumbnailPublicId(staticThumbnailPublicId || publicIds[0]);
-      setGalleryError('');
-      setHasGalleryMedia(true);
+      setGalleryError(cachedPublicIds.length ? '' : 'Manifest has no media for this folder yet.');
+      setIsGalleryLoading(false);
     };
 
     loadGallery();
 
     return () => {
-      isCancelled = true;
+      cancelled = true;
     };
-  }, [
-    fallbackThumbnailPublicId,
-    galleryFolderPath,
-    galleryLabelPrefix,
-    hasStaticMedia,
-    staticThumbnailPublicId,
-  ]);
-
-  const hasVideo = baseMediaItems.some((item) => item.type === 'video' && item.src);
+  }, [configuredPublicIds, fallbackPublicId, folderPath, project?.id, project?.title]);
 
   return {
-    hasVideo,
-    hasGalleryMedia,
+    thumbnailPublicId,
+    mediaItems,
     isGalleryLoading,
     galleryError,
-    thumbnailPublicId,
-    mediaItems: [...baseMediaItems, ...galleryMediaItems],
   };
 };

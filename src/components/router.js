@@ -14,7 +14,6 @@ const RouterComponent = () => {
           <Route path="/projects" element={<Navigate to={`/projects/${defaultProjectKey}`} replace />} />
           <Route path="/projects/:projectKey" element={<Projects />} />
           <Route path="/contact-us" element={<Contact />} />
-          {/* Add other routes as needed */}
         </Routes>
       </div>
     </Router>

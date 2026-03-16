@@ -1,26 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { imagePublicIds, resolveCloudinaryPublicId } from '../../data/imageData';
-import projects, { projectOrder } from '../../data/projects';
+import { featuredProjectOrder, projectsById } from '../../data/projects';
 import { useProjectGallery } from '../../hooks/useProjectGallery';
 import ResponsiveImage from '../media/ResponsiveImage';
 
-const featuredProjects = projectOrder.slice(0, 6).map((key) => ({
-  key,
-  title: projects[key]?.title || key,
-  subtitle: projects[key]?.heroSubtitle || projects[key]?.desc || 'Cloudinary project gallery',
-}));
+const featuredProjects = featuredProjectOrder
+  .map((id) => projectsById[id])
+  .filter(Boolean)
+  .map((project) => ({
+    id: project.id,
+    title: project.title,
+    subtitle: project.description || project.meta || 'Project gallery',
+  }));
 
 const Hero = ({ onOpenModal }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const heroImgRef = useRef(null);
 
-  const activeProject =
-    featuredProjects[activeIndex] || featuredProjects[0] || { key: null, title: '', subtitle: '' };
-  const activeProjectData = activeProject.key ? projects[activeProject.key] : null;
-  const { thumbnailPublicId } = useProjectGallery(activeProjectData);
-  const activeImageId = resolveCloudinaryPublicId(
-    thumbnailPublicId || imagePublicIds[activeProject.key] || imagePublicIds.bottega
-  );
+  const activeProject = featuredProjects[activeIndex] || featuredProjects[0] || null;
+  const projectData = activeProject ? projectsById[activeProject.id] : null;
+  const { thumbnailPublicId } = useProjectGallery(projectData);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,6 +26,7 @@ const Hero = ({ onOpenModal }) => {
         heroImgRef.current.style.transform = `scale(1.04) translateY(${window.scrollY * 0.18}px)`;
       }
     };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -38,13 +37,13 @@ const Hero = ({ onOpenModal }) => {
     }
 
     const intervalId = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % featuredProjects.length);
+      setActiveIndex((prev) => (prev + 1) % featuredProjects.length);
     }, 8000);
 
     return () => clearInterval(intervalId);
   }, []);
 
-  if (!activeProject.key) {
+  if (!activeProject) {
     return null;
   }
 
@@ -53,7 +52,7 @@ const Hero = ({ onOpenModal }) => {
       <div className="hero-slide">
         <ResponsiveImage
           className="hero-img"
-          publicId={activeImageId}
+          publicId={thumbnailPublicId || projectData?.fallbackPublicId}
           alt={activeProject.title}
           loading="eager"
           fetchPriority="high"
@@ -68,26 +67,20 @@ const Hero = ({ onOpenModal }) => {
           <div className="hero-title">{activeProject.title}</div>
           <div className="hero-subtitle">{activeProject.subtitle}</div>
           <div className="hero-actions">
-            <button
-              className="hero-btn-primary"
-              onClick={() => onOpenModal(activeProject.key)}
-            >
+            <button className="hero-btn-primary" onClick={() => onOpenModal(activeProject.id)}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M1.5 1L10.5 6L1.5 11V1Z" fill="black" />
               </svg>
               View Project
             </button>
-            <button
-              className="hero-btn-secondary"
-              onClick={() => onOpenModal(activeProject.key)}
-            >
+            <button className="hero-btn-secondary" onClick={() => onOpenModal(activeProject.id)}>
               + Info
             </button>
           </div>
           <div className="hero-dots">
             {featuredProjects.map((project, index) => (
               <button
-                key={project.key}
+                key={project.id}
                 className={`hero-dot${activeIndex === index ? ' active' : ''}`}
                 aria-label={`Show ${project.title}`}
                 onClick={() => setActiveIndex(index)}
