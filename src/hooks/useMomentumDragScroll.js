@@ -65,6 +65,7 @@ const createRowController = (row) => {
   const onMouseDown = (e) => {
     if (e.button !== 0) return;
     cancelRaf();
+    row.classList.remove('is-dragging');
     mouseDown    = true;
     mouseDragged = false;
     mouseStartX  = e.clientX;
@@ -113,6 +114,7 @@ const createRowController = (row) => {
   const onTouchStart = (e) => {
     if (e.touches.length !== 1) return;
     cancelRaf();
+    row.classList.remove('is-dragging');
     const t     = e.touches[0];
     touchActive  = true;
     touchId      = t.identifier;
