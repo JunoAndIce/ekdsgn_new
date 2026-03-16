@@ -39,9 +39,7 @@ export const useProjectGallery = (project) => {
   const [galleryError, setGalleryError] = useState('');
 
   useEffect(() => {
-    let cancelled = false;
-
-    const loadGallery = async () => {
+    const loadGallery = () => {
       if (configuredPublicIds.length) {
         const media = buildMediaItems(configuredPublicIds, project?.title || 'Project');
         setThumbnailPublicId(configuredPublicIds[0] || fallbackPublicId);
@@ -83,10 +81,6 @@ export const useProjectGallery = (project) => {
     };
 
     loadGallery();
-
-    return () => {
-      cancelled = true;
-    };
   }, [configuredPublicIds, fallbackPublicId, folderPath, project?.id, project?.title]);
 
   return {
