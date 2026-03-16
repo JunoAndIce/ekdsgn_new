@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-16T23:08:26.380Z",
+  "generatedAt": "2026-03-16T23:29:55.794Z",
   "source": "cloudinary-admin-api",
   "galleries": {
     "ek": [],
@@ -39,41 +39,41 @@
     "ek/Design/Alief ISD": [
       "alief_oqid6w"
     ],
-    "ek/Design/eventflyers": [
+    "ek/Design/Event Flyers": [
       "events_urexcu"
     ],
     "ek/Design/hwy6": [
       "hwy6_r6mjbl"
     ],
-    "ek/Design/logos": [
+    "ek/Design/Logos": [
       "logos_fzughu"
     ],
-    "ek/Design/merch": [
+    "ek/Design/Merch": [
       "merch_cts8lw"
     ],
-    "ek/Design/sports": [
+    "ek/Design/Sports": [
       "sports_wbnex6"
     ],
-    "ek/Design/templehoops": [
+    "ek/Design/Temple Hoops": [
       "temple_ubzt4c"
     ],
-    "ek/Design/thelogocentral": [
+    "ek/Design/TheLogoCentral": [
       "TLC_wawzbc"
     ],
-    "ek/Video/6athleticsroad2hyrox": [
-      "_0000_roadtohyroxthumb_ppts1i"
-    ],
-    "ek/Video/6athleticsspikewarsvi": [
-      "_0002_spikewarsthumb_n3zsgh"
-    ],
-    "ek/Video/boteggadesirespopuprecap": [
+    "ek/Video/Bottega Desires Popup Recap": [
       "_0001_bottegadesirespopupthumb_grotxh"
     ],
-    "ek/Video/hwy6popupphase2": [
+    "ek/Video/Phase 2 | hwy6popup": [
       "_0004_phase2thumb_bmmgyk"
     ],
-    "ek/Video/hwy6popupphase3": [
+    "ek/Video/Phase 3 | hwy6popup": [
       "_0003_phase3thumb_qvkxnl"
+    ],
+    "ek/Video/Road to Hyrox Houston": [
+      "_0000_roadtohyroxthumb_ppts1i"
+    ],
+    "ek/Video/SPIKEWARSVI": [
+      "_0002_spikewarsthumb_n3zsgh"
     ]
   }
 }

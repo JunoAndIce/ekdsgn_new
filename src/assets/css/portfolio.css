@@ -258,8 +258,6 @@ html, body {
   display: flex; gap: 12px;
   overflow-x: auto;
   padding: 4px 20px 20px;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
   touch-action: pan-y pinch-zoom;
@@ -268,12 +266,12 @@ html, body {
   -webkit-user-select: none;
 }
 .scroll-row::-webkit-scrollbar { display: none; }
-.scroll-row:active { cursor: grabbing; }
 .scroll-row.is-dragging {
   cursor: grabbing;
 }
 .scroll-row.is-dragging .card-wide {
   pointer-events: none;
+  transform: scale(1); /* cancel card-wide:active scale during drag */
 }
 .scroll-row::after {
   content: '';
@@ -283,7 +281,6 @@ html, body {
 /* ─── CARD: WIDE 16:9 ─── */
 .card-wide {
   flex: 0 0 68vw; max-width: 280px;
-  scroll-snap-align: start;
   border-radius: 16px;
   overflow: hidden; position: relative;
   cursor: pointer; aspect-ratio: 16/9;

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-16T23:08:26.380Z",
+  "generatedAt": "2026-03-16T23:29:55.794Z",
   "source": "cloudinary-admin-api",
   "projectPrefix": "",
   "projects": [
@@ -244,10 +244,10 @@
       "placeholderClass": ""
     },
     {
-      "id": "ek-design-eventflyers",
+      "id": "ek-design-event-flyers",
       "category": "design",
       "featured": false,
-      "title": "Eventflyers",
+      "title": "Event Flyers",
       "groupName": "Design",
       "meta": "Design",
       "description": "Design project gallery",
@@ -258,7 +258,7 @@
       "publicIds": [
         "events_urexcu"
       ],
-      "folderPath": "ek/Design/eventflyers",
+      "folderPath": "ek/Design/Event Flyers",
       "fallbackPublicId": "events_urexcu",
       "placeholderIcon": "✦",
       "placeholderClass": ""
@@ -298,7 +298,7 @@
       "publicIds": [
         "logos_fzughu"
       ],
-      "folderPath": "ek/Design/logos",
+      "folderPath": "ek/Design/Logos",
       "fallbackPublicId": "logos_fzughu",
       "placeholderIcon": "✦",
       "placeholderClass": ""
@@ -318,7 +318,7 @@
       "publicIds": [
         "merch_cts8lw"
       ],
-      "folderPath": "ek/Design/merch",
+      "folderPath": "ek/Design/Merch",
       "fallbackPublicId": "merch_cts8lw",
       "placeholderIcon": "✦",
       "placeholderClass": ""
@@ -338,16 +338,16 @@
       "publicIds": [
         "sports_wbnex6"
       ],
-      "folderPath": "ek/Design/sports",
+      "folderPath": "ek/Design/Sports",
       "fallbackPublicId": "sports_wbnex6",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-design-templehoops",
+      "id": "ek-design-temple-hoops",
       "category": "design",
       "featured": false,
-      "title": "Templehoops",
+      "title": "Temple Hoops",
       "groupName": "Design",
       "meta": "Design",
       "description": "Design project gallery",
@@ -358,7 +358,7 @@
       "publicIds": [
         "temple_ubzt4c"
       ],
-      "folderPath": "ek/Design/templehoops",
+      "folderPath": "ek/Design/Temple Hoops",
       "fallbackPublicId": "temple_ubzt4c",
       "placeholderIcon": "✦",
       "placeholderClass": ""
@@ -367,7 +367,7 @@
       "id": "ek-design-thelogocentral",
       "category": "design",
       "featured": false,
-      "title": "Thelogocentral",
+      "title": "TheLogoCentral",
       "groupName": "Design",
       "meta": "Design",
       "description": "Design project gallery",
@@ -378,56 +378,16 @@
       "publicIds": [
         "TLC_wawzbc"
       ],
-      "folderPath": "ek/Design/thelogocentral",
+      "folderPath": "ek/Design/TheLogoCentral",
       "fallbackPublicId": "TLC_wawzbc",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-video-6athleticsroad2hyrox",
+      "id": "ek-video-bottega-desires-popup-recap",
       "category": "video",
       "featured": false,
-      "title": "6athleticsroad2hyrox",
-      "groupName": "Video",
-      "meta": "Video",
-      "description": "Video project gallery",
-      "tags": [
-        "Video",
-        "Cloudinary"
-      ],
-      "publicIds": [
-        "_0000_roadtohyroxthumb_ppts1i"
-      ],
-      "folderPath": "ek/Video/6athleticsroad2hyrox",
-      "fallbackPublicId": "_0000_roadtohyroxthumb_ppts1i",
-      "placeholderIcon": "✦",
-      "placeholderClass": ""
-    },
-    {
-      "id": "ek-video-6athleticsspikewarsvi",
-      "category": "video",
-      "featured": false,
-      "title": "6athleticsspikewarsvi",
-      "groupName": "Video",
-      "meta": "Video",
-      "description": "Video project gallery",
-      "tags": [
-        "Video",
-        "Cloudinary"
-      ],
-      "publicIds": [
-        "_0002_spikewarsthumb_n3zsgh"
-      ],
-      "folderPath": "ek/Video/6athleticsspikewarsvi",
-      "fallbackPublicId": "_0002_spikewarsthumb_n3zsgh",
-      "placeholderIcon": "✦",
-      "placeholderClass": ""
-    },
-    {
-      "id": "ek-video-boteggadesirespopuprecap",
-      "category": "video",
-      "featured": false,
-      "title": "Boteggadesirespopuprecap",
+      "title": "Bottega Desires Popup Recap",
       "groupName": "Video",
       "meta": "Video",
       "description": "Video project gallery",
@@ -438,16 +398,16 @@
       "publicIds": [
         "_0001_bottegadesirespopupthumb_grotxh"
       ],
-      "folderPath": "ek/Video/boteggadesirespopuprecap",
+      "folderPath": "ek/Video/Bottega Desires Popup Recap",
       "fallbackPublicId": "_0001_bottegadesirespopupthumb_grotxh",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-video-hwy6popupphase2",
+      "id": "ek-video-phase-2-hwy6popup",
       "category": "video",
       "featured": false,
-      "title": "Hwy6popupphase2",
+      "title": "Phase 2 | Hwy6popup",
       "groupName": "Video",
       "meta": "Video",
       "description": "Video project gallery",
@@ -458,16 +418,16 @@
       "publicIds": [
         "_0004_phase2thumb_bmmgyk"
       ],
-      "folderPath": "ek/Video/hwy6popupphase2",
+      "folderPath": "ek/Video/Phase 2 | hwy6popup",
       "fallbackPublicId": "_0004_phase2thumb_bmmgyk",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-video-hwy6popupphase3",
+      "id": "ek-video-phase-3-hwy6popup",
       "category": "video",
       "featured": false,
-      "title": "Hwy6popupphase3",
+      "title": "Phase 3 | Hwy6popup",
       "groupName": "Video",
       "meta": "Video",
       "description": "Video project gallery",
@@ -478,8 +438,48 @@
       "publicIds": [
         "_0003_phase3thumb_qvkxnl"
       ],
-      "folderPath": "ek/Video/hwy6popupphase3",
+      "folderPath": "ek/Video/Phase 3 | hwy6popup",
       "fallbackPublicId": "_0003_phase3thumb_qvkxnl",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-road-to-hyrox-houston",
+      "category": "video",
+      "featured": false,
+      "title": "Road To Hyrox Houston",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
+      "tags": [
+        "Video",
+        "Cloudinary"
+      ],
+      "publicIds": [
+        "_0000_roadtohyroxthumb_ppts1i"
+      ],
+      "folderPath": "ek/Video/Road to Hyrox Houston",
+      "fallbackPublicId": "_0000_roadtohyroxthumb_ppts1i",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-spikewarsvi",
+      "category": "video",
+      "featured": false,
+      "title": "SPIKEWARSVI",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
+      "tags": [
+        "Video",
+        "Cloudinary"
+      ],
+      "publicIds": [
+        "_0002_spikewarsthumb_n3zsgh"
+      ],
+      "folderPath": "ek/Video/SPIKEWARSVI",
+      "fallbackPublicId": "_0002_spikewarsthumb_n3zsgh",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     }

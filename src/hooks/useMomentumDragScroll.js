@@ -1,265 +1,198 @@
 import { useEffect } from 'react';
 
+// ─── Constants ────────────────────────────────────────────────────────────────
+const DRAG_THRESHOLD = 5;    // px of movement before locking into drag mode
+const FRICTION       = 0.95; // velocity multiplier per RAF frame (~60fps)
+const MIN_VEL        = 0.25; // px/frame below which inertia stops
+const VEL_WINDOW_MS  = 100;  // sample window for release-velocity calculation
+
+// ─── Per-row controller ───────────────────────────────────────────────────────
 const createRowController = (row) => {
-  const state = {
-    isDown: false,
-    didDrag: false,
-    startX: 0,
-    startScrollLeft: 0,
-    lastX: 0,
-    lastT: 0,
-    velocity: 0,
-    frameId: 0,
-    suppressClickUntil: 0,
-    activePointerId: null,
-    dragThreshold: 6,
-    clickSuppressMs: 220,
-  };
+  // Shared inertia RAF state
+  let rafId  = null;
+  let velX   = 0;
 
-  const markDragging = (dragging) => {
-    row.classList.toggle('is-dragging', dragging);
-    row.dataset.dragging = dragging ? 'true' : 'false';
-  };
-
-  const stopInertia = () => {
-    if (state.frameId) {
-      window.cancelAnimationFrame(state.frameId);
-      state.frameId = 0;
-    }
+  const cancelRaf = () => {
+    if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
   };
 
   const startInertia = () => {
-    stopInertia();
-
-    let velocity = state.velocity;
-    let lastFrame = performance.now();
-
-    const tick = (now) => {
-      const dt = Math.min(34, now - lastFrame);
-      lastFrame = now;
-
-      if (Math.abs(velocity) < 0.02) {
-        stopInertia();
+    cancelRaf();
+    const tick = () => {
+      if (Math.abs(velX) < MIN_VEL) {
+        velX = 0;
+        row.classList.remove('is-dragging');
         return;
       }
-
-      const maxScrollLeft = row.scrollWidth - row.clientWidth;
-      row.scrollLeft += velocity * dt;
-
-      if ((row.scrollLeft <= 0 && velocity < 0) || (row.scrollLeft >= maxScrollLeft && velocity > 0)) {
-        stopInertia();
-        return;
-      }
-
-      velocity *= 0.92;
-      state.frameId = window.requestAnimationFrame(tick);
+      row.scrollLeft += velX;
+      velX *= FRICTION;
+      rafId = requestAnimationFrame(tick);
     };
-
-    state.frameId = window.requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   };
 
-  const startDrag = (clientX, pointerId = null) => {
-    if (row.scrollWidth <= row.clientWidth) {
-      return;
-    }
-
-    stopInertia();
-
-    state.isDown = true;
-    state.didDrag = false;
-    state.startX = clientX;
-    state.startScrollLeft = row.scrollLeft;
-    state.lastX = clientX;
-    state.lastT = performance.now();
-    state.velocity = 0;
-    state.activePointerId = pointerId;
-    markDragging(false);
-  };
-
-  const moveDrag = (clientX) => {
-    if (!state.isDown) {
-      return false;
-    }
-
-    const deltaX = clientX - state.startX;
+  // Velocity sampler: keeps the last VEL_WINDOW_MS of (x, t) samples
+  const samples = [];
+  const recordSample = (x) => {
     const now = performance.now();
-    const dt = Math.max(1, now - state.lastT);
-    const dx = clientX - state.lastX;
+    samples.push({ x, t: now });
+    while (samples.length > 1 && now - samples[0].t > VEL_WINDOW_MS) samples.shift();
+  };
+  const calcVelocity = () => {
+    if (samples.length < 2) return 0;
+    const first = samples[0], last = samples[samples.length - 1];
+    const dt = last.t - first.t;
+    return dt > 0 ? ((first.x - last.x) / dt) * 16 : 0; // px/frame @ 60fps
+  };
+  const clearSamples = () => { samples.length = 0; };
 
-    if (Math.abs(deltaX) > state.dragThreshold) {
-      state.didDrag = true;
-      markDragging(true);
-    }
-
-    if (state.didDrag) {
-      row.scrollLeft = state.startScrollLeft - deltaX;
-      const pointerVelocity = dx / dt;
-      state.velocity = (state.velocity * 0.8) + (-pointerVelocity * 0.2);
-    }
-
-    state.lastX = clientX;
-    state.lastT = now;
-
-    return state.didDrag;
+  // One-shot click blocker attached after a confirmed drag ends.
+  // Fires before any children's onClick, removes itself immediately.
+  const stopOneClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
+  const blockNextClick = () => {
+    row.addEventListener('click', stopOneClick, { capture: true, once: true });
   };
 
-  const endDrag = () => {
-    if (!state.isDown) {
-      return;
+  // ── Mouse handlers (desktop) ───────────────────────────────────────────────
+  let mouseDown    = false;
+  let mouseStartX  = 0;
+  let mouseScrollL = 0;
+  let mouseDragged = false;
+
+  const onMouseDown = (e) => {
+    if (e.button !== 0) return;
+    cancelRaf();
+    mouseDown    = true;
+    mouseDragged = false;
+    mouseStartX  = e.clientX;
+    mouseScrollL = row.scrollLeft;
+    velX = 0;
+    clearSamples();
+    recordSample(e.clientX);
+  };
+
+  const onMouseMove = (e) => {
+    if (!mouseDown) return;
+    recordSample(e.clientX);
+    const dx = e.clientX - mouseStartX;
+    if (!mouseDragged && Math.abs(dx) > DRAG_THRESHOLD) {
+      mouseDragged = true;
+      row.classList.add('is-dragging');
     }
+    if (mouseDragged) {
+      row.scrollLeft = mouseScrollL - dx;
+    }
+  };
 
-    state.isDown = false;
+  const onMouseUp = () => {
+    if (!mouseDown) return;
+    mouseDown = false;
+    if (mouseDragged) {
+      velX = calcVelocity();
+      blockNextClick();
+      startInertia();
+    }
+    mouseDragged = false;
+    clearSamples();
+  };
 
-    if (state.didDrag) {
-      state.suppressClickUntil = performance.now() + state.clickSuppressMs;
-      markDragging(false);
+  // ── Touch handlers (mobile / tablet) ──────────────────────────────────────
+  let touchActive     = false;
+  let touchId         = null;
+  let touchStartX     = 0;
+  let touchStartY     = 0;
+  let touchScrollL    = 0;
+  let touchIsH        = null; // null = undecided, true = horizontal, false = vertical
+
+  const findTouch = (list) =>
+    Array.from(list).find((t) => t.identifier === touchId) || null;
+
+  const onTouchStart = (e) => {
+    if (e.touches.length !== 1) return;
+    cancelRaf();
+    const t     = e.touches[0];
+    touchActive  = true;
+    touchId      = t.identifier;
+    touchStartX  = t.clientX;
+    touchStartY  = t.clientY;
+    touchScrollL = row.scrollLeft;
+    touchIsH     = null;
+    velX         = 0;
+    clearSamples();
+    recordSample(t.clientX);
+  };
+
+  const onTouchMove = (e) => {
+    if (!touchActive) return;
+    const t = findTouch(e.touches);
+    if (!t) return;
+
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+
+    // Lock direction on first significant movement
+    if (touchIsH === null && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+      touchIsH = Math.abs(dx) >= Math.abs(dy);
+    }
+    if (!touchIsH) return; // vertical – let browser handle page scroll
+
+    e.preventDefault(); // take over horizontal scroll
+    recordSample(t.clientX);
+    row.scrollLeft = touchScrollL - dx;
+    row.classList.add('is-dragging');
+  };
+
+  const onTouchEnd = (e) => {
+    if (!touchActive) return;
+    touchActive = false;
+    if (touchIsH === true) {
+      velX = calcVelocity();
       startInertia();
     } else {
-      markDragging(false);
+      row.classList.remove('is-dragging');
     }
-
-    state.activePointerId = null;
+    touchId  = null;
+    touchIsH = null;
+    clearSamples();
   };
 
-  const onWheel = (event) => {
-    if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
-      return;
-    }
-
-    row.scrollLeft += event.deltaY;
-    event.preventDefault();
-  };
-
-  const onClickCapture = (event) => {
-    if (performance.now() < state.suppressClickUntil || row.dataset.dragging === 'true') {
-      event.preventDefault();
-      event.stopPropagation();
+  // ── Wheel handler ──────────────────────────────────────────────────────────
+  const onWheel = (e) => {
+    // Trackpad / magic mouse sends deltaX – let CSS handle it naturally
+    if (Math.abs(e.deltaX) > 0) return;
+    // Vertical mouse wheel: redirect to horizontal scroll
+    if (Math.abs(e.deltaY) > 0) {
+      e.preventDefault();
+      cancelRaf();
+      row.scrollLeft += e.deltaY;
     }
   };
 
-  const onDragStart = (event) => {
-    event.preventDefault();
+  const onDragStart = (e) => { e.preventDefault(); };
+
+  // ── Attach listeners ──────────────────────────────────────────────────────
+  const offs = [];
+  const on = (el, type, fn, opts) => {
+    el.addEventListener(type, fn, opts);
+    offs.push(() => el.removeEventListener(type, fn, opts));
   };
 
-  const removeListeners = [];
-  const add = (target, type, handler, options) => {
-    target.addEventListener(type, handler, options);
-    removeListeners.push(() => target.removeEventListener(type, handler, options));
-  };
-
-  const hasPointer = typeof window !== 'undefined' && 'PointerEvent' in window;
-
-  if (hasPointer) {
-    const onPointerDown = (event) => {
-      if (event.pointerType === 'mouse' && event.button !== 0) {
-        return;
-      }
-
-      startDrag(event.clientX, event.pointerId);
-
-      if (state.isDown && typeof row.setPointerCapture === 'function') {
-        row.setPointerCapture(event.pointerId);
-      }
-
-      event.preventDefault();
-    };
-
-    const onPointerMove = (event) => {
-      if (!state.isDown) {
-        return;
-      }
-
-      if (state.activePointerId !== null && event.pointerId !== state.activePointerId) {
-        return;
-      }
-
-      const didDrag = moveDrag(event.clientX);
-      if (didDrag) {
-        event.preventDefault();
-      }
-    };
-
-    const onPointerEnd = (event) => {
-      if (state.activePointerId !== null && event.pointerId !== state.activePointerId) {
-        return;
-      }
-
-      if (typeof row.releasePointerCapture === 'function') {
-        try {
-          row.releasePointerCapture(event.pointerId);
-        } catch (_error) {
-          // no-op
-        }
-      }
-
-      endDrag();
-    };
-
-    add(row, 'pointerdown', onPointerDown);
-    add(row, 'pointermove', onPointerMove);
-    add(row, 'pointerup', onPointerEnd);
-    add(row, 'pointercancel', onPointerEnd);
-    add(row, 'pointerleave', onPointerEnd);
-  } else {
-    const onMouseDown = (event) => {
-      if (event.button !== 0) {
-        return;
-      }
-      startDrag(event.clientX);
-      event.preventDefault();
-    };
-
-    const onMouseMove = (event) => {
-      const didDrag = moveDrag(event.clientX);
-      if (didDrag) {
-        event.preventDefault();
-      }
-    };
-
-    const onMouseUp = () => {
-      endDrag();
-    };
-
-    const onTouchStart = (event) => {
-      const touch = event.touches && event.touches[0];
-      if (!touch) {
-        return;
-      }
-      startDrag(touch.clientX);
-    };
-
-    const onTouchMove = (event) => {
-      const touch = event.touches && event.touches[0];
-      if (!touch) {
-        return;
-      }
-
-      const didDrag = moveDrag(touch.clientX);
-      if (didDrag) {
-        event.preventDefault();
-      }
-    };
-
-    const onTouchEnd = () => {
-      endDrag();
-    };
-
-    add(row, 'mousedown', onMouseDown);
-    add(window, 'mousemove', onMouseMove);
-    add(window, 'mouseup', onMouseUp);
-    add(row, 'touchstart', onTouchStart, { passive: true });
-    add(row, 'touchmove', onTouchMove, { passive: false });
-    add(row, 'touchend', onTouchEnd);
-    add(row, 'touchcancel', onTouchEnd);
-  }
-
-  add(row, 'wheel', onWheel, { passive: false });
-  add(row, 'click', onClickCapture, true);
-  add(row, 'dragstart', onDragStart);
+  on(row,    'mousedown',  onMouseDown);
+  on(window, 'mousemove',  onMouseMove);
+  on(window, 'mouseup',    onMouseUp);
+  on(row,    'touchstart', onTouchStart, { passive: true });
+  on(row,    'touchmove',  onTouchMove,  { passive: false });
+  on(row,    'touchend',   onTouchEnd);
+  on(row,    'touchcancel',onTouchEnd);
+  on(row,    'wheel',      onWheel,      { passive: false });
+  on(row,    'dragstart',  onDragStart);
 
   return () => {
-    stopInertia();
-    removeListeners.forEach((remove) => remove());
+    cancelRaf();
+    offs.forEach((fn) => fn());
   };
 };
 
