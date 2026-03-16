@@ -74,26 +74,84 @@ const fetchAdminJson = async (url, config) => {
   return response.json();
 };
 
-const listCloudinaryFolders = async (config, options = {}) => {
+const postAdminJson = async (url, body, config) => {
+  const response = await fetch(url.toString(), {
+    method: 'POST',
+    headers: {
+      Authorization: getAdminAuthorizationHeader(config),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body || {}),
+  });
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(`Cloudinary Admin API request failed (${response.status}). ${errorBody.slice(0, 300)}`);
+  }
+
+  return response.json();
+};
+
+const listCloudinaryFoldersPage = async (config, options = {}) => {
   const normalizedPrefix = String(options.prefix || '').trim().replace(/^\/+|\/+$/g, '');
+  const normalizedCursor = String(options.nextCursor || '').trim();
+  const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/folders`);
+  url.searchParams.set('max_results', String(MAX_RESULTS));
+
+  if (normalizedPrefix) {
+    url.searchParams.set('prefix', normalizedPrefix);
+  }
+
+  if (normalizedCursor) {
+    url.searchParams.set('next_cursor', normalizedCursor);
+  }
+
+  const payload = await fetchAdminJson(url, config);
+  const folders = (Array.isArray(payload?.folders) ? payload.folders : [])
+    .map((folder) => String(folder?.path || '').trim().replace(/^\/+|\/+$/g, ''))
+    .filter(Boolean);
+
+  return {
+    folders,
+    nextCursor: String(payload?.next_cursor || '').trim(),
+  };
+};
+
+const listCloudinaryFoldersByPrefix = async (config, prefix = '') => {
   const folders = [];
   let nextCursor = '';
 
   do {
-    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/folders`);
-    url.searchParams.set('max_results', String(MAX_RESULTS));
+    const page = await listCloudinaryFoldersPage(config, { prefix, nextCursor });
+    folders.push(...page.folders);
+    nextCursor = page.nextCursor;
+  } while (nextCursor);
 
-    if (nextCursor) {
-      url.searchParams.set('next_cursor', nextCursor);
-    }
+  return Array.from(new Set(folders)).sort((left, right) => left.localeCompare(right));
+};
 
-    const payload = await fetchAdminJson(url, config);
-    const folderItems = Array.isArray(payload?.folders) ? payload.folders : [];
+const listCloudinaryFolders = async (config, options = {}) => {
+  const normalizedPrefix = String(options.prefix || '').trim().replace(/^\/+|\/+$/g, '');
+  const discovered = new Set();
+  const queue = [];
 
-    folderItems.forEach((folder) => {
-      const folderPath = String(folder?.path || '').trim().replace(/^\/+|\/+$/g, '');
+  if (normalizedPrefix) {
+    discovered.add(normalizedPrefix);
+    queue.push(normalizedPrefix);
+  } else {
+    const rootFolders = await listCloudinaryFoldersByPrefix(config, '');
+    rootFolders.forEach((folderPath) => {
+      discovered.add(folderPath);
+      queue.push(folderPath);
+    });
+  }
 
-      if (!folderPath) {
+  while (queue.length) {
+    const parentFolder = queue.shift();
+    const childFolders = await listCloudinaryFoldersByPrefix(config, `${parentFolder}/`);
+
+    childFolders.forEach((folderPath) => {
+      if (!folderPath || discovered.has(folderPath)) {
         return;
       }
 
@@ -101,51 +159,71 @@ const listCloudinaryFolders = async (config, options = {}) => {
         return;
       }
 
-      folders.push(folderPath);
+      discovered.add(folderPath);
+      queue.push(folderPath);
     });
+  }
 
-    nextCursor = String(payload?.next_cursor || '').trim();
-  } while (nextCursor);
-
-  return Array.from(new Set(folders)).sort((left, right) => left.localeCompare(right));
+  return Array.from(discovered).sort((left, right) => left.localeCompare(right));
 };
 
-const listAllImagePublicIds = async (config) => {
-  const publicIds = [];
+const listAllImageResources = async (config) => {
+  const resources = [];
   let nextCursor = '';
 
   do {
-    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/resources/image/upload`);
-    url.searchParams.set('max_results', String(MAX_RESULTS));
+    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/resources/search`);
+    const payload = await postAdminJson(
+      url,
+      {
+        expression: 'resource_type:image',
+        max_results: MAX_RESULTS,
+        next_cursor: nextCursor || undefined,
+      },
+      config
+    );
+    const pageResources = Array.isArray(payload?.resources) ? payload.resources : [];
 
-    if (nextCursor) {
-      url.searchParams.set('next_cursor', nextCursor);
-    }
-
-    const payload = await fetchAdminJson(url, config);
-    const resources = Array.isArray(payload?.resources) ? payload.resources : [];
-
-    resources.forEach((resource) => {
+    pageResources.forEach((resource) => {
       const publicId = String(resource?.public_id || '').trim();
-      if (publicId) {
-        publicIds.push(publicId);
+      const assetFolder = String(resource?.asset_folder || '').trim();
+      const folder = String(resource?.folder || '').trim();
+
+      if (!publicId && !assetFolder && !folder) {
+        return;
       }
+
+      resources.push({
+        publicId,
+        assetFolder,
+        folder,
+      });
     });
 
     nextCursor = String(payload?.next_cursor || '').trim();
   } while (nextCursor);
 
-  return Array.from(new Set(publicIds)).sort((left, right) => left.localeCompare(right));
+  return resources;
 };
 
-const extractFolderPathsFromPublicIds = (publicIds, prefix = '') => {
+const extractFolderPathsFromResources = (resources, prefix = '') => {
   const normalizedPrefix = String(prefix || '').trim().replace(/^\/+|\/+$/g, '');
 
   return Array.from(
     new Set(
-      (Array.isArray(publicIds) ? publicIds : [])
-        .map((publicId) => {
-          const value = String(publicId || '').trim();
+      (Array.isArray(resources) ? resources : [])
+        .map((resource) => {
+          const assetFolder = String(resource?.assetFolder || '').trim().replace(/^\/+|\/+$/g, '');
+          if (assetFolder) {
+            return assetFolder;
+          }
+
+          const folder = String(resource?.folder || '').trim().replace(/^\/+|\/+$/g, '');
+          if (folder) {
+            return folder;
+          }
+
+          const value = String(resource?.publicId || '').trim();
           const splitIndex = value.lastIndexOf('/');
           if (splitIndex <= 0) {
             return '';
@@ -176,15 +254,16 @@ const listCloudinaryFolderPublicIds = async (folderPath, config) => {
   let nextCursor = '';
 
   do {
-    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/resources/image/upload`);
-    url.searchParams.set('prefix', `${normalizedFolderPath}/`);
-    url.searchParams.set('max_results', String(MAX_RESULTS));
-
-    if (nextCursor) {
-      url.searchParams.set('next_cursor', nextCursor);
-    }
-
-    const payload = await fetchAdminJson(url, config);
+    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/resources/search`);
+    const payload = await postAdminJson(
+      url,
+      {
+        expression: `resource_type:image AND (asset_folder="${normalizedFolderPath}" OR folder="${normalizedFolderPath}")`,
+        max_results: MAX_RESULTS,
+        next_cursor: nextCursor || undefined,
+      },
+      config
+    );
     const resources = Array.isArray(payload?.resources) ? payload.resources : [];
 
     resources.forEach((resource) => {
@@ -245,8 +324,8 @@ const deriveProjectFromFolder = (folderPath, publicIds, index) => {
 
 const buildCloudinaryProjectsSnapshot = async ({ config, prefix = '', includeEmptyFolders = false }) => {
   const folderPathsFromApi = await listCloudinaryFolders(config, { prefix });
-  const allImagePublicIds = await listAllImagePublicIds(config);
-  const folderPathsFromAssets = extractFolderPathsFromPublicIds(allImagePublicIds, prefix);
+  const allImageResources = await listAllImageResources(config);
+  const folderPathsFromAssets = extractFolderPathsFromResources(allImageResources, prefix);
   const folderPaths = Array.from(new Set([...folderPathsFromApi, ...folderPathsFromAssets]))
     .sort((left, right) => left.localeCompare(right));
   const galleries = {};
