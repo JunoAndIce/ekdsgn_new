@@ -1,6 +1,487 @@
 {
-  "generatedAt": "2026-03-16T04:06:16.335Z",
+  "generatedAt": "2026-03-16T04:20:13.411Z",
   "source": "cloudinary-admin-api",
   "projectPrefix": "",
-  "projects": []
+  "projects": [
+    {
+      "id": "ek-creativedir-6athletics",
+      "category": "creativedir",
+      "featured": true,
+      "title": "6athletics",
+      "meta": "ek/creativedir/6athletics",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/6athletics",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "6athletics"
+      ],
+      "publicIds": [
+        "_0008_6athleticsthumb_vqocmj"
+      ],
+      "folderPath": "ek/creativedir/6athletics",
+      "fallbackPublicId": "_0008_6athleticsthumb_vqocmj",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-77studios",
+      "category": "creativedir",
+      "featured": true,
+      "title": "77studios",
+      "meta": "ek/creativedir/77studios",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/77studios",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "77studios"
+      ],
+      "publicIds": [
+        "_0007_skyamithumb_lmdz82"
+      ],
+      "folderPath": "ek/creativedir/77studios",
+      "fallbackPublicId": "_0007_skyamithumb_lmdz82",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-bottegadesires",
+      "category": "creativedir",
+      "featured": true,
+      "title": "Bottegadesires",
+      "meta": "ek/creativedir/bottegadesires",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/bottegadesires",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Bottegadesires"
+      ],
+      "publicIds": [
+        "_0012_bottegathumb_swbg0g"
+      ],
+      "folderPath": "ek/creativedir/bottegadesires",
+      "fallbackPublicId": "_0012_bottegathumb_swbg0g",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-deluxehills",
+      "category": "creativedir",
+      "featured": true,
+      "title": "Deluxehills",
+      "meta": "ek/creativedir/deluxehills",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/deluxehills",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Deluxehills"
+      ],
+      "publicIds": [
+        "_0006_deluxethumb_j3ghiy"
+      ],
+      "folderPath": "ek/creativedir/deluxehills",
+      "fallbackPublicId": "_0006_deluxethumb_j3ghiy",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-frndsnfoes",
+      "category": "creativedir",
+      "featured": true,
+      "title": "Frndsnfoes",
+      "meta": "ek/creativedir/frndsnfoes",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/frndsnfoes",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Frndsnfoes"
+      ],
+      "publicIds": [
+        "fnf_k6s0om"
+      ],
+      "folderPath": "ek/creativedir/frndsnfoes",
+      "fallbackPublicId": "fnf_k6s0om",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-mcmurryfootball",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Mcmurryfootball",
+      "meta": "ek/creativedir/mcmurryfootball",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/mcmurryfootball",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Mcmurryfootball"
+      ],
+      "publicIds": [
+        "mcmury_axn18p"
+      ],
+      "folderPath": "ek/creativedir/mcmurryfootball",
+      "fallbackPublicId": "mcmury_axn18p",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-powerade",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Powerade",
+      "meta": "ek/creativedir/powerade",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/powerade",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Powerade"
+      ],
+      "publicIds": [
+        "_0011_poweradethumb_kgnjaf"
+      ],
+      "folderPath": "ek/creativedir/powerade",
+      "fallbackPublicId": "_0011_poweradethumb_kgnjaf",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-seddyhendrixdavidruffin",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Seddyhendrixdavidruffin",
+      "meta": "ek/creativedir/seddyhendrixdavidruffin",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/seddyhendrixdavidruffin",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Seddyhendrixdavidruffin"
+      ],
+      "publicIds": [
+        "_0005_seddyhendrixthumb_uflebz"
+      ],
+      "folderPath": "ek/creativedir/seddyhendrixdavidruffin",
+      "fallbackPublicId": "_0005_seddyhendrixthumb_uflebz",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-selectqb",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Selectqb",
+      "meta": "ek/creativedir/selectqb",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/selectqb",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Selectqb"
+      ],
+      "publicIds": [
+        "select_dvaito"
+      ],
+      "folderPath": "ek/creativedir/selectqb",
+      "fallbackPublicId": "select_dvaito",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-sherunshouston",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Sherunshouston",
+      "meta": "ek/creativedir/sherunshouston",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/sherunshouston",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Sherunshouston"
+      ],
+      "publicIds": [
+        "_0010_sherunshoustonthumb_f7xwyr"
+      ],
+      "folderPath": "ek/creativedir/sherunshouston",
+      "fallbackPublicId": "_0010_sherunshoustonthumb_f7xwyr",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-creativedir-tenthseries",
+      "category": "creativedir",
+      "featured": false,
+      "title": "Tenthseries",
+      "meta": "ek/creativedir/tenthseries",
+      "description": "Auto-generated from Cloudinary folder: ek/creativedir/tenthseries",
+      "tags": [
+        "Ek",
+        "Creativedir",
+        "Tenthseries"
+      ],
+      "publicIds": [
+        "_0009_tenthseriesthumb_c6jp83"
+      ],
+      "folderPath": "ek/creativedir/tenthseries",
+      "fallbackPublicId": "_0009_tenthseriesthumb_c6jp83",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-aliefisd",
+      "category": "design",
+      "featured": false,
+      "title": "Aliefisd",
+      "meta": "ek/Design/aliefisd",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/aliefisd",
+      "tags": [
+        "Ek",
+        "Design",
+        "Aliefisd"
+      ],
+      "publicIds": [
+        "alief_oqid6w"
+      ],
+      "folderPath": "ek/Design/aliefisd",
+      "fallbackPublicId": "alief_oqid6w",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-eventflyers",
+      "category": "design",
+      "featured": false,
+      "title": "Eventflyers",
+      "meta": "ek/Design/eventflyers",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/eventflyers",
+      "tags": [
+        "Ek",
+        "Design",
+        "Eventflyers"
+      ],
+      "publicIds": [
+        "events_urexcu"
+      ],
+      "folderPath": "ek/Design/eventflyers",
+      "fallbackPublicId": "events_urexcu",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-hwy6",
+      "category": "design",
+      "featured": false,
+      "title": "Hwy6",
+      "meta": "ek/Design/hwy6",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/hwy6",
+      "tags": [
+        "Ek",
+        "Design",
+        "Hwy6"
+      ],
+      "publicIds": [
+        "hwy6_r6mjbl"
+      ],
+      "folderPath": "ek/Design/hwy6",
+      "fallbackPublicId": "hwy6_r6mjbl",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-logos",
+      "category": "design",
+      "featured": false,
+      "title": "Logos",
+      "meta": "ek/Design/logos",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/logos",
+      "tags": [
+        "Ek",
+        "Design",
+        "Logos"
+      ],
+      "publicIds": [
+        "logos_fzughu"
+      ],
+      "folderPath": "ek/Design/logos",
+      "fallbackPublicId": "logos_fzughu",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-merch",
+      "category": "design",
+      "featured": false,
+      "title": "Merch",
+      "meta": "ek/Design/merch",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/merch",
+      "tags": [
+        "Ek",
+        "Design",
+        "Merch"
+      ],
+      "publicIds": [
+        "merch_cts8lw"
+      ],
+      "folderPath": "ek/Design/merch",
+      "fallbackPublicId": "merch_cts8lw",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-sports",
+      "category": "design",
+      "featured": false,
+      "title": "Sports",
+      "meta": "ek/Design/sports",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/sports",
+      "tags": [
+        "Ek",
+        "Design",
+        "Sports"
+      ],
+      "publicIds": [
+        "sports_wbnex6"
+      ],
+      "folderPath": "ek/Design/sports",
+      "fallbackPublicId": "sports_wbnex6",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-templehoops",
+      "category": "design",
+      "featured": false,
+      "title": "Templehoops",
+      "meta": "ek/Design/templehoops",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/templehoops",
+      "tags": [
+        "Ek",
+        "Design",
+        "Templehoops"
+      ],
+      "publicIds": [
+        "temple_ubzt4c"
+      ],
+      "folderPath": "ek/Design/templehoops",
+      "fallbackPublicId": "temple_ubzt4c",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-design-thelogocentral",
+      "category": "design",
+      "featured": false,
+      "title": "Thelogocentral",
+      "meta": "ek/Design/thelogocentral",
+      "description": "Auto-generated from Cloudinary folder: ek/Design/thelogocentral",
+      "tags": [
+        "Ek",
+        "Design",
+        "Thelogocentral"
+      ],
+      "publicIds": [
+        "TLC_wawzbc"
+      ],
+      "folderPath": "ek/Design/thelogocentral",
+      "fallbackPublicId": "TLC_wawzbc",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-6athleticsroad2hyrox",
+      "category": "video",
+      "featured": false,
+      "title": "6athleticsroad2hyrox",
+      "meta": "ek/Video/6athleticsroad2hyrox",
+      "description": "Auto-generated from Cloudinary folder: ek/Video/6athleticsroad2hyrox",
+      "tags": [
+        "Ek",
+        "Video",
+        "6athleticsroad2hyrox"
+      ],
+      "publicIds": [
+        "_0000_roadtohyroxthumb_ppts1i"
+      ],
+      "folderPath": "ek/Video/6athleticsroad2hyrox",
+      "fallbackPublicId": "_0000_roadtohyroxthumb_ppts1i",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-6athleticsspikewarsvi",
+      "category": "video",
+      "featured": false,
+      "title": "6athleticsspikewarsvi",
+      "meta": "ek/Video/6athleticsspikewarsvi",
+      "description": "Auto-generated from Cloudinary folder: ek/Video/6athleticsspikewarsvi",
+      "tags": [
+        "Ek",
+        "Video",
+        "6athleticsspikewarsvi"
+      ],
+      "publicIds": [
+        "_0002_spikewarsthumb_n3zsgh"
+      ],
+      "folderPath": "ek/Video/6athleticsspikewarsvi",
+      "fallbackPublicId": "_0002_spikewarsthumb_n3zsgh",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-boteggadesirespopuprecap",
+      "category": "video",
+      "featured": false,
+      "title": "Boteggadesirespopuprecap",
+      "meta": "ek/Video/boteggadesirespopuprecap",
+      "description": "Auto-generated from Cloudinary folder: ek/Video/boteggadesirespopuprecap",
+      "tags": [
+        "Ek",
+        "Video",
+        "Boteggadesirespopuprecap"
+      ],
+      "publicIds": [
+        "_0001_bottegadesirespopupthumb_grotxh"
+      ],
+      "folderPath": "ek/Video/boteggadesirespopuprecap",
+      "fallbackPublicId": "_0001_bottegadesirespopupthumb_grotxh",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-hwy6popupphase2",
+      "category": "video",
+      "featured": false,
+      "title": "Hwy6popupphase2",
+      "meta": "ek/Video/hwy6popupphase2",
+      "description": "Auto-generated from Cloudinary folder: ek/Video/hwy6popupphase2",
+      "tags": [
+        "Ek",
+        "Video",
+        "Hwy6popupphase2"
+      ],
+      "publicIds": [
+        "_0004_phase2thumb_bmmgyk"
+      ],
+      "folderPath": "ek/Video/hwy6popupphase2",
+      "fallbackPublicId": "_0004_phase2thumb_bmmgyk",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    },
+    {
+      "id": "ek-video-hwy6popupphase3",
+      "category": "video",
+      "featured": false,
+      "title": "Hwy6popupphase3",
+      "meta": "ek/Video/hwy6popupphase3",
+      "description": "Auto-generated from Cloudinary folder: ek/Video/hwy6popupphase3",
+      "tags": [
+        "Ek",
+        "Video",
+        "Hwy6popupphase3"
+      ],
+      "publicIds": [
+        "_0003_phase3thumb_qvkxnl"
+      ],
+      "folderPath": "ek/Video/hwy6popupphase3",
+      "fallbackPublicId": "_0003_phase3thumb_qvkxnl",
+      "placeholderIcon": "✦",
+      "placeholderClass": ""
+    }
+  ]
 }

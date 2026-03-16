@@ -1,7 +1,79 @@
 {
-  "generatedAt": "2026-03-16T04:06:16.335Z",
+  "generatedAt": "2026-03-16T04:20:13.411Z",
   "source": "cloudinary-admin-api",
   "galleries": {
-    "ek": []
+    "ek": [],
+    "ek/creativedir/6athletics": [
+      "_0008_6athleticsthumb_vqocmj"
+    ],
+    "ek/creativedir/77studios": [
+      "_0007_skyamithumb_lmdz82"
+    ],
+    "ek/creativedir/bottegadesires": [
+      "_0012_bottegathumb_swbg0g"
+    ],
+    "ek/creativedir/deluxehills": [
+      "_0006_deluxethumb_j3ghiy"
+    ],
+    "ek/creativedir/frndsnfoes": [
+      "fnf_k6s0om"
+    ],
+    "ek/creativedir/mcmurryfootball": [
+      "mcmury_axn18p"
+    ],
+    "ek/creativedir/powerade": [
+      "_0011_poweradethumb_kgnjaf"
+    ],
+    "ek/creativedir/seddyhendrixdavidruffin": [
+      "_0005_seddyhendrixthumb_uflebz"
+    ],
+    "ek/creativedir/selectqb": [
+      "select_dvaito"
+    ],
+    "ek/creativedir/sherunshouston": [
+      "_0010_sherunshoustonthumb_f7xwyr"
+    ],
+    "ek/creativedir/tenthseries": [
+      "_0009_tenthseriesthumb_c6jp83"
+    ],
+    "ek/Design/aliefisd": [
+      "alief_oqid6w"
+    ],
+    "ek/Design/eventflyers": [
+      "events_urexcu"
+    ],
+    "ek/Design/hwy6": [
+      "hwy6_r6mjbl"
+    ],
+    "ek/Design/logos": [
+      "logos_fzughu"
+    ],
+    "ek/Design/merch": [
+      "merch_cts8lw"
+    ],
+    "ek/Design/sports": [
+      "sports_wbnex6"
+    ],
+    "ek/Design/templehoops": [
+      "temple_ubzt4c"
+    ],
+    "ek/Design/thelogocentral": [
+      "TLC_wawzbc"
+    ],
+    "ek/Video/6athleticsroad2hyrox": [
+      "_0000_roadtohyroxthumb_ppts1i"
+    ],
+    "ek/Video/6athleticsspikewarsvi": [
+      "_0002_spikewarsthumb_n3zsgh"
+    ],
+    "ek/Video/boteggadesirespopuprecap": [
+      "_0001_bottegadesirespopupthumb_grotxh"
+    ],
+    "ek/Video/hwy6popupphase2": [
+      "_0004_phase2thumb_bmmgyk"
+    ],
+    "ek/Video/hwy6popupphase3": [
+      "_0003_phase3thumb_qvkxnl"
+    ]
   }
 }
