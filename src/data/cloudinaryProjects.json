@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-03-16T04:26:33.902Z",
+  "generatedAt": "2026-03-16T04:34:44.192Z",
   "source": "cloudinary-admin-api",
   "projectPrefix": "",
   "projects": [
@@ -8,12 +8,12 @@
       "category": "creativedir",
       "featured": true,
       "title": "6athletics",
-      "meta": "ek/creativedir/6athletics",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/6athletics",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "6athletics"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0008_6athleticsthumb_vqocmj"
@@ -28,12 +28,12 @@
       "category": "creativedir",
       "featured": true,
       "title": "77studios",
-      "meta": "ek/creativedir/77studios",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/77studios",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "77studios"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0007_skyamithumb_lmdz82"
@@ -48,12 +48,12 @@
       "category": "creativedir",
       "featured": true,
       "title": "Bottegadesires",
-      "meta": "ek/creativedir/bottegadesires",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/bottegadesires",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Bottegadesires"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0012_bottegathumb_swbg0g"
@@ -68,12 +68,12 @@
       "category": "creativedir",
       "featured": true,
       "title": "Deluxehills",
-      "meta": "ek/creativedir/deluxehills",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/deluxehills",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Deluxehills"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0006_deluxethumb_j3ghiy"
@@ -88,12 +88,12 @@
       "category": "creativedir",
       "featured": true,
       "title": "Frndsnfoes",
-      "meta": "ek/creativedir/frndsnfoes",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/frndsnfoes",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Frndsnfoes"
+        "Cloudinary"
       ],
       "publicIds": [
         "fnf_k6s0om"
@@ -108,12 +108,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Mcmurryfootball",
-      "meta": "ek/creativedir/mcmurryfootball",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/mcmurryfootball",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Mcmurryfootball"
+        "Cloudinary"
       ],
       "publicIds": [
         "mcmury_axn18p"
@@ -128,12 +128,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Powerade",
-      "meta": "ek/creativedir/powerade",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/powerade",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Powerade"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0011_poweradethumb_kgnjaf"
@@ -148,12 +148,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Seddyhendrixdavidruffin",
-      "meta": "ek/creativedir/seddyhendrixdavidruffin",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/seddyhendrixdavidruffin",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Seddyhendrixdavidruffin"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0005_seddyhendrixthumb_uflebz"
@@ -168,12 +168,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Selectqb",
-      "meta": "ek/creativedir/selectqb",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/selectqb",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Selectqb"
+        "Cloudinary"
       ],
       "publicIds": [
         "select_dvaito"
@@ -188,12 +188,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Sherunshouston",
-      "meta": "ek/creativedir/sherunshouston",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/sherunshouston",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Sherunshouston"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0010_sherunshoustonthumb_f7xwyr"
@@ -208,12 +208,12 @@
       "category": "creativedir",
       "featured": false,
       "title": "Tenthseries",
-      "meta": "ek/creativedir/tenthseries",
-      "description": "Auto-generated from Cloudinary folder: ek/creativedir/tenthseries",
+      "groupName": "Creativedir",
+      "meta": "Creativedir",
+      "description": "Creativedir project gallery",
       "tags": [
-        "Ek",
         "Creativedir",
-        "Tenthseries"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0009_tenthseriesthumb_c6jp83"
@@ -228,12 +228,12 @@
       "category": "design",
       "featured": false,
       "title": "Aliefisd",
-      "meta": "ek/Design/aliefisd",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/aliefisd",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Aliefisd"
+        "Cloudinary"
       ],
       "publicIds": [
         "alief_oqid6w"
@@ -248,12 +248,12 @@
       "category": "design",
       "featured": false,
       "title": "Eventflyers",
-      "meta": "ek/Design/eventflyers",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/eventflyers",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Eventflyers"
+        "Cloudinary"
       ],
       "publicIds": [
         "events_urexcu"
@@ -268,12 +268,12 @@
       "category": "design",
       "featured": false,
       "title": "Hwy6",
-      "meta": "ek/Design/hwy6",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/hwy6",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Hwy6"
+        "Cloudinary"
       ],
       "publicIds": [
         "hwy6_r6mjbl"
@@ -288,12 +288,12 @@
       "category": "design",
       "featured": false,
       "title": "Logos",
-      "meta": "ek/Design/logos",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/logos",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Logos"
+        "Cloudinary"
       ],
       "publicIds": [
         "logos_fzughu"
@@ -308,12 +308,12 @@
       "category": "design",
       "featured": false,
       "title": "Merch",
-      "meta": "ek/Design/merch",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/merch",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Merch"
+        "Cloudinary"
       ],
       "publicIds": [
         "merch_cts8lw"
@@ -328,12 +328,12 @@
       "category": "design",
       "featured": false,
       "title": "Sports",
-      "meta": "ek/Design/sports",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/sports",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Sports"
+        "Cloudinary"
       ],
       "publicIds": [
         "sports_wbnex6"
@@ -348,12 +348,12 @@
       "category": "design",
       "featured": false,
       "title": "Templehoops",
-      "meta": "ek/Design/templehoops",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/templehoops",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Templehoops"
+        "Cloudinary"
       ],
       "publicIds": [
         "temple_ubzt4c"
@@ -368,12 +368,12 @@
       "category": "design",
       "featured": false,
       "title": "Thelogocentral",
-      "meta": "ek/Design/thelogocentral",
-      "description": "Auto-generated from Cloudinary folder: ek/Design/thelogocentral",
+      "groupName": "Design",
+      "meta": "Design",
+      "description": "Design project gallery",
       "tags": [
-        "Ek",
         "Design",
-        "Thelogocentral"
+        "Cloudinary"
       ],
       "publicIds": [
         "TLC_wawzbc"
@@ -388,12 +388,12 @@
       "category": "video",
       "featured": false,
       "title": "6athleticsroad2hyrox",
-      "meta": "ek/Video/6athleticsroad2hyrox",
-      "description": "Auto-generated from Cloudinary folder: ek/Video/6athleticsroad2hyrox",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
       "tags": [
-        "Ek",
         "Video",
-        "6athleticsroad2hyrox"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0000_roadtohyroxthumb_ppts1i"
@@ -408,12 +408,12 @@
       "category": "video",
       "featured": false,
       "title": "6athleticsspikewarsvi",
-      "meta": "ek/Video/6athleticsspikewarsvi",
-      "description": "Auto-generated from Cloudinary folder: ek/Video/6athleticsspikewarsvi",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
       "tags": [
-        "Ek",
         "Video",
-        "6athleticsspikewarsvi"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0002_spikewarsthumb_n3zsgh"
@@ -428,12 +428,12 @@
       "category": "video",
       "featured": false,
       "title": "Boteggadesirespopuprecap",
-      "meta": "ek/Video/boteggadesirespopuprecap",
-      "description": "Auto-generated from Cloudinary folder: ek/Video/boteggadesirespopuprecap",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
       "tags": [
-        "Ek",
         "Video",
-        "Boteggadesirespopuprecap"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0001_bottegadesirespopupthumb_grotxh"
@@ -448,12 +448,12 @@
       "category": "video",
       "featured": false,
       "title": "Hwy6popupphase2",
-      "meta": "ek/Video/hwy6popupphase2",
-      "description": "Auto-generated from Cloudinary folder: ek/Video/hwy6popupphase2",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
       "tags": [
-        "Ek",
         "Video",
-        "Hwy6popupphase2"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0004_phase2thumb_bmmgyk"
@@ -468,12 +468,12 @@
       "category": "video",
       "featured": false,
       "title": "Hwy6popupphase3",
-      "meta": "ek/Video/hwy6popupphase3",
-      "description": "Auto-generated from Cloudinary folder: ek/Video/hwy6popupphase3",
+      "groupName": "Video",
+      "meta": "Video",
+      "description": "Video project gallery",
       "tags": [
-        "Ek",
         "Video",
-        "Hwy6popupphase3"
+        "Cloudinary"
       ],
       "publicIds": [
         "_0003_phase3thumb_qvkxnl"
