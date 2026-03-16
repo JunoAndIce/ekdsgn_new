@@ -262,11 +262,17 @@ html, body {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
-  touch-action: pan-x;
+  touch-action: pan-y;
   cursor: grab;
 }
 .scroll-row::-webkit-scrollbar { display: none; }
 .scroll-row:active { cursor: grabbing; }
+.scroll-row.is-dragging {
+  cursor: grabbing;
+}
+.scroll-row.is-dragging .card-wide {
+  pointer-events: none;
+}
 .scroll-row::after {
   content: '';
   flex: 0 0 4px;

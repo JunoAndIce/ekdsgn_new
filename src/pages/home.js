@@ -44,6 +44,62 @@ const Home = () => {
   useEffect(() => {
     const rows = Array.from(document.querySelectorAll('.scroll-row'));
     const removeHandlers = rows.map((row) => {
+      let isPointerDown = false;
+      let didDrag = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+
+      const markDragState = (dragging) => {
+        row.classList.toggle('is-dragging', dragging);
+        row.dataset.dragging = dragging ? 'true' : 'false';
+      };
+
+      const handlePointerDown = (event) => {
+        if (event.button !== 0) {
+          return;
+        }
+
+        isPointerDown = true;
+        didDrag = false;
+        startX = event.clientX;
+        startScrollLeft = row.scrollLeft;
+        markDragState(false);
+      };
+
+      const handlePointerMove = (event) => {
+        if (!isPointerDown) {
+          return;
+        }
+
+        const deltaX = event.clientX - startX;
+
+        if (Math.abs(deltaX) > 4) {
+          didDrag = true;
+          markDragState(true);
+        }
+
+        if (didDrag) {
+          row.scrollLeft = startScrollLeft - deltaX;
+          event.preventDefault();
+        }
+      };
+
+      const endPointerInteraction = () => {
+        if (!isPointerDown) {
+          return;
+        }
+
+        isPointerDown = false;
+
+        if (didDrag) {
+          window.setTimeout(() => {
+            markDragState(false);
+          }, 120);
+        } else {
+          markDragState(false);
+        }
+      };
+
       const handleWheel = (event) => {
         if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
           return;
@@ -53,9 +109,30 @@ const Home = () => {
         event.preventDefault();
       };
 
-      row.addEventListener('wheel', handleWheel, { passive: false });
+      const handleClickCapture = (event) => {
+        if (row.dataset.dragging === 'true') {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      };
 
-      return () => row.removeEventListener('wheel', handleWheel);
+      row.addEventListener('pointerdown', handlePointerDown);
+      row.addEventListener('pointermove', handlePointerMove);
+      row.addEventListener('pointerup', endPointerInteraction);
+      row.addEventListener('pointercancel', endPointerInteraction);
+      row.addEventListener('pointerleave', endPointerInteraction);
+      row.addEventListener('wheel', handleWheel, { passive: false });
+      row.addEventListener('click', handleClickCapture, true);
+
+      return () => {
+        row.removeEventListener('pointerdown', handlePointerDown);
+        row.removeEventListener('pointermove', handlePointerMove);
+        row.removeEventListener('pointerup', endPointerInteraction);
+        row.removeEventListener('pointercancel', endPointerInteraction);
+        row.removeEventListener('pointerleave', endPointerInteraction);
+        row.removeEventListener('wheel', handleWheel);
+        row.removeEventListener('click', handleClickCapture, true);
+      };
     });
 
     return () => {
