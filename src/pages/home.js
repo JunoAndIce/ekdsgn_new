@@ -48,10 +48,54 @@ const Home = () => {
       let didDrag = false;
       let startX = 0;
       let startScrollLeft = 0;
+      let lastMoveTime = 0;
+      let lastMoveX = 0;
+      let scrollVelocity = 0;
+      let inertiaFrameId = 0;
+      let suppressClickUntil = 0;
+      const dragThreshold = 6;
+      const clickSuppressMs = 220;
 
       const markDragState = (dragging) => {
         row.classList.toggle('is-dragging', dragging);
         row.dataset.dragging = dragging ? 'true' : 'false';
+      };
+
+      const stopInertia = () => {
+        if (inertiaFrameId) {
+          window.cancelAnimationFrame(inertiaFrameId);
+          inertiaFrameId = 0;
+        }
+      };
+
+      const startInertia = () => {
+        stopInertia();
+
+        let velocity = scrollVelocity;
+        let lastFrameTime = performance.now();
+
+        const tick = (now) => {
+          const frameDt = Math.min(34, now - lastFrameTime);
+          lastFrameTime = now;
+
+          if (Math.abs(velocity) < 0.02) {
+            stopInertia();
+            return;
+          }
+
+          const maxScrollLeft = row.scrollWidth - row.clientWidth;
+          row.scrollLeft += velocity * frameDt;
+
+          if ((row.scrollLeft <= 0 && velocity < 0) || (row.scrollLeft >= maxScrollLeft && velocity > 0)) {
+            stopInertia();
+            return;
+          }
+
+          velocity *= 0.92;
+          inertiaFrameId = window.requestAnimationFrame(tick);
+        };
+
+        inertiaFrameId = window.requestAnimationFrame(tick);
       };
 
       const handlePointerDown = (event) => {
@@ -63,10 +107,15 @@ const Home = () => {
           return;
         }
 
+        stopInertia();
+
         isPointerDown = true;
         didDrag = false;
         startX = event.clientX;
         startScrollLeft = row.scrollLeft;
+        lastMoveX = event.clientX;
+        lastMoveTime = performance.now();
+        scrollVelocity = 0;
         markDragState(false);
 
         if (typeof row.setPointerCapture === 'function') {
@@ -82,16 +131,25 @@ const Home = () => {
         }
 
         const deltaX = event.clientX - startX;
+        const now = performance.now();
+        const dt = Math.max(1, now - lastMoveTime);
+        const dx = event.clientX - lastMoveX;
 
-        if (Math.abs(deltaX) > 4) {
+        if (Math.abs(deltaX) > dragThreshold) {
           didDrag = true;
           markDragState(true);
         }
 
         if (didDrag) {
           row.scrollLeft = startScrollLeft - deltaX;
+          const pointerVelocity = dx / dt;
+          const nextVelocity = -pointerVelocity;
+          scrollVelocity = (scrollVelocity * 0.8) + (nextVelocity * 0.2);
           event.preventDefault();
         }
+
+        lastMoveX = event.clientX;
+        lastMoveTime = now;
       };
 
       const endPointerInteraction = (event) => {
@@ -110,9 +168,9 @@ const Home = () => {
         }
 
         if (didDrag) {
-          window.setTimeout(() => {
-            markDragState(false);
-          }, 120);
+          suppressClickUntil = performance.now() + clickSuppressMs;
+          markDragState(false);
+          startInertia();
         } else {
           markDragState(false);
         }
@@ -128,7 +186,7 @@ const Home = () => {
       };
 
       const handleClickCapture = (event) => {
-        if (row.dataset.dragging === 'true') {
+        if (performance.now() < suppressClickUntil || row.dataset.dragging === 'true') {
           event.preventDefault();
           event.stopPropagation();
         }
@@ -148,6 +206,7 @@ const Home = () => {
       row.addEventListener('dragstart', handleDragStart);
 
       return () => {
+        stopInertia();
         row.removeEventListener('pointerdown', handlePointerDown);
         row.removeEventListener('pointermove', handlePointerMove);
         row.removeEventListener('pointerup', endPointerInteraction);

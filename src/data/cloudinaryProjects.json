@@ -1,233 +1,233 @@
 {
-  "generatedAt": "2026-03-16T04:51:40.302Z",
+  "generatedAt": "2026-03-16T23:02:41.583Z",
   "source": "cloudinary-admin-api",
   "projectPrefix": "",
   "projects": [
     {
-      "id": "ek-creativedir-6athletics",
-      "category": "creativedir",
+      "id": "ek-creative-direction-6athletics",
+      "category": "creative-direction",
       "featured": true,
       "title": "6athletics",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0008_6athleticsthumb_vqocmj"
       ],
-      "folderPath": "ek/creativedir/6athletics",
+      "folderPath": "ek/Creative Direction/6athletics",
       "fallbackPublicId": "_0008_6athleticsthumb_vqocmj",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-77studios",
-      "category": "creativedir",
+      "id": "ek-creative-direction-77studios",
+      "category": "creative-direction",
       "featured": true,
       "title": "77studios",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0007_skyamithumb_lmdz82"
       ],
-      "folderPath": "ek/creativedir/77studios",
+      "folderPath": "ek/Creative Direction/77studios",
       "fallbackPublicId": "_0007_skyamithumb_lmdz82",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-bottegadesires",
-      "category": "creativedir",
+      "id": "ek-creative-direction-bottega-desires",
+      "category": "creative-direction",
       "featured": true,
-      "title": "Bottegadesires",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "Bottega Desires",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0012_bottegathumb_swbg0g"
       ],
-      "folderPath": "ek/creativedir/bottegadesires",
+      "folderPath": "ek/Creative Direction/Bottega Desires",
       "fallbackPublicId": "_0012_bottegathumb_swbg0g",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-deluxehills",
-      "category": "creativedir",
+      "id": "ek-creative-direction-deluxe-hills",
+      "category": "creative-direction",
       "featured": true,
-      "title": "Deluxehills",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "Deluxe Hills",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0006_deluxethumb_j3ghiy"
       ],
-      "folderPath": "ek/creativedir/deluxehills",
+      "folderPath": "ek/Creative Direction/Deluxe Hills",
       "fallbackPublicId": "_0006_deluxethumb_j3ghiy",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-frndsnfoes",
-      "category": "creativedir",
+      "id": "ek-creative-direction-frndsnfoes",
+      "category": "creative-direction",
       "featured": true,
       "title": "Frndsnfoes",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "fnf_k6s0om"
       ],
-      "folderPath": "ek/creativedir/frndsnfoes",
+      "folderPath": "ek/Creative Direction/Frndsnfoes",
       "fallbackPublicId": "fnf_k6s0om",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-mcmurryfootball",
-      "category": "creativedir",
+      "id": "ek-creative-direction-mcmurry-football",
+      "category": "creative-direction",
       "featured": false,
-      "title": "Mcmurryfootball",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "McMurry Football",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "mcmury_axn18p"
       ],
-      "folderPath": "ek/creativedir/mcmurryfootball",
+      "folderPath": "ek/Creative Direction/McMurry Football",
       "fallbackPublicId": "mcmury_axn18p",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-powerade",
-      "category": "creativedir",
+      "id": "ek-creative-direction-powerade",
+      "category": "creative-direction",
       "featured": false,
       "title": "Powerade",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0011_poweradethumb_kgnjaf"
       ],
-      "folderPath": "ek/creativedir/powerade",
+      "folderPath": "ek/Creative Direction/Powerade",
       "fallbackPublicId": "_0011_poweradethumb_kgnjaf",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-seddyhendrixdavidruffin",
-      "category": "creativedir",
+      "id": "ek-creative-direction-seddy-hendrix",
+      "category": "creative-direction",
       "featured": false,
-      "title": "Seddyhendrixdavidruffin",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "Seddy Hendrix",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0005_seddyhendrixthumb_uflebz"
       ],
-      "folderPath": "ek/creativedir/seddyhendrixdavidruffin",
+      "folderPath": "ek/Creative Direction/Seddy Hendrix",
       "fallbackPublicId": "_0005_seddyhendrixthumb_uflebz",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-selectqb",
-      "category": "creativedir",
+      "id": "ek-creative-direction-selectqb",
+      "category": "creative-direction",
       "featured": false,
-      "title": "Selectqb",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "SelectQB",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "select_dvaito"
       ],
-      "folderPath": "ek/creativedir/selectqb",
+      "folderPath": "ek/Creative Direction/SelectQB",
       "fallbackPublicId": "select_dvaito",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-sherunshouston",
-      "category": "creativedir",
+      "id": "ek-creative-direction-sherunshouston",
+      "category": "creative-direction",
       "featured": false,
-      "title": "Sherunshouston",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "SheRunsHouston",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0010_sherunshoustonthumb_f7xwyr"
       ],
-      "folderPath": "ek/creativedir/sherunshouston",
+      "folderPath": "ek/Creative Direction/SheRunsHouston",
       "fallbackPublicId": "_0010_sherunshoustonthumb_f7xwyr",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-creativedir-tenthseries",
-      "category": "creativedir",
+      "id": "ek-creative-direction-tenth-series",
+      "category": "creative-direction",
       "featured": false,
-      "title": "Tenthseries",
-      "groupName": "Creativedir",
-      "meta": "Creativedir",
-      "description": "Creativedir project gallery",
+      "title": "Tenth Series",
+      "groupName": "Creative Direction",
+      "meta": "Creative Direction",
+      "description": "Creative Direction project gallery",
       "tags": [
-        "Creativedir",
+        "Creative Direction",
         "Cloudinary"
       ],
       "publicIds": [
         "_0009_tenthseriesthumb_c6jp83"
       ],
-      "folderPath": "ek/creativedir/tenthseries",
+      "folderPath": "ek/Creative Direction/Tenth Series",
       "fallbackPublicId": "_0009_tenthseriesthumb_c6jp83",
       "placeholderIcon": "✦",
       "placeholderClass": ""
     },
     {
-      "id": "ek-design-aliefisd",
+      "id": "ek-design-alief-isd",
       "category": "design",
       "featured": false,
-      "title": "Aliefisd",
+      "title": "Alief ISD",
       "groupName": "Design",
       "meta": "Design",
       "description": "Design project gallery",
@@ -238,7 +238,7 @@
       "publicIds": [
         "alief_oqid6w"
       ],
-      "folderPath": "ek/Design/aliefisd",
+      "folderPath": "ek/Design/Alief ISD",
       "fallbackPublicId": "alief_oqid6w",
       "placeholderIcon": "✦",
       "placeholderClass": ""
