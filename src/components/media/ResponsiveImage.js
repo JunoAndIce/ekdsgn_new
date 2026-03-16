@@ -26,6 +26,7 @@ const ResponsiveImage = forwardRef(({
       decoding={decoding}
       fetchPriority={fetchPriority}
       style={style}
+      draggable={false}
     />
   );
 });
