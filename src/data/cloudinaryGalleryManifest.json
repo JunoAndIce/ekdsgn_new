@@ -1,5 +1,11 @@
 {
-  "generatedAt": "",
+  "generatedAt": "2026-03-16T03:08:30.811Z",
   "source": "cloudinary-admin-api",
-  "galleries": {}
+  "galleries": {
+    "ek/creativedir/bottegadesires": [],
+    "ekdsgn/projects": [],
+    "ek/creativedir/powerade": [],
+    "ek/creativedir/6athletics": [],
+    "ek/creativedir/77studios": []
+  }
 }
