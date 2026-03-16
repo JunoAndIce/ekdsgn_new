@@ -261,8 +261,12 @@ html, body {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
+  cursor: grab;
 }
 .scroll-row::-webkit-scrollbar { display: none; }
+.scroll-row:active { cursor: grabbing; }
 .scroll-row::after {
   content: '';
   flex: 0 0 4px;

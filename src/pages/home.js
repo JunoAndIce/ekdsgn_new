@@ -41,6 +41,28 @@ const Home = () => {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const rows = Array.from(document.querySelectorAll('.scroll-row'));
+    const removeHandlers = rows.map((row) => {
+      const handleWheel = (event) => {
+        if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) {
+          return;
+        }
+
+        row.scrollLeft += event.deltaY;
+        event.preventDefault();
+      };
+
+      row.addEventListener('wheel', handleWheel, { passive: false });
+
+      return () => row.removeEventListener('wheel', handleWheel);
+    });
+
+    return () => {
+      removeHandlers.forEach((remove) => remove());
+    };
+  }, [activeCategory]);
+
   return (
     <>
       <Navbar />
