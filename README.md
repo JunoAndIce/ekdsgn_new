@@ -44,7 +44,7 @@ You don't have to ever use `eject`. The curated feature set is suitable for smal
 This project uses:
 
 - Cloudinary for responsive image delivery (`src/components/media/ResponsiveImage.js`)
-- Server-side gallery manifest generation from Cloudinary Admin API
+- Server-side automatic project generation from Cloudinary Admin API folders
 
 Create a `.env` file in the project root with:
 
@@ -58,6 +58,12 @@ CLOUDINARY_API_SECRET_BASE64=your_base64_encoded_api_secret
 
 # Server-only token for protected admin manifest endpoint
 CLOUDINARY_MANIFEST_SYNC_TOKEN=your_random_long_token
+
+# Optional: limit auto-discovery to a Cloudinary folder prefix
+CLOUDINARY_PROJECTS_PREFIX=ek
+
+# Optional: include empty folders as projects (default false)
+CLOUDINARY_INCLUDE_EMPTY_FOLDERS=false
 
 # Optional mp4 URLs for project videos
 REACT_APP_BOTTEGA_VIDEO_MP4=https://your-cdn/video.mp4
@@ -78,16 +84,7 @@ Node:
 node -e "console.log(Buffer.from('your_cloudinary_api_secret','utf8').toString('base64'))"
 ```
 
-Cloudinary public IDs are mapped in `src/data/imageData.js`.
-
-Project card definitions are in `src/data/projects.json`.
-
-For each project card, only these fields are required:
-
-- `id`
-- `title`
-- `meta`
-- `folderPath`
+Cloudinary project data is auto-generated at build time from Admin API folder discovery.
 
 Generate the gallery manifest with:
 
@@ -95,7 +92,10 @@ Generate the gallery manifest with:
 npm run sync:cloudinary-galleries
 ```
 
-This writes `src/data/cloudinaryGalleryManifest.json` from Cloudinary Admin API responses.
+This writes:
+
+- `src/data/cloudinaryGalleryManifest.json` (folder -> publicIds lookup)
+- `src/data/cloudinaryProjects.json` (auto-generated project cards)
 
 The build process runs this automatically via `prebuild`, so deployments always compile with fresh server-generated gallery JSON.
 
@@ -109,7 +109,7 @@ Security notes:
 
 - Never prefix admin credentials with `REACT_APP_`.
 - Keep `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET_BASE64`, and `CLOUDINARY_MANIFEST_SYNC_TOKEN` only in server-side environment variables.
-- The manifest generator uses only folder paths defined in `src/data/projects.json` (no arbitrary user-supplied folder queries).
+- Folder and project discovery are performed only on the server using Cloudinary Admin API credentials.
 
 ## Vercel Frontend Deployment
 
