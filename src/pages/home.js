@@ -55,7 +55,11 @@ const Home = () => {
       };
 
       const handlePointerDown = (event) => {
-        if (event.button !== 0) {
+        if (event.pointerType === 'mouse' && event.button !== 0) {
+          return;
+        }
+
+        if (row.scrollWidth <= row.clientWidth) {
           return;
         }
 
@@ -64,6 +68,12 @@ const Home = () => {
         startX = event.clientX;
         startScrollLeft = row.scrollLeft;
         markDragState(false);
+
+        if (typeof row.setPointerCapture === 'function') {
+          row.setPointerCapture(event.pointerId);
+        }
+
+        event.preventDefault();
       };
 
       const handlePointerMove = (event) => {
@@ -84,12 +94,20 @@ const Home = () => {
         }
       };
 
-      const endPointerInteraction = () => {
+      const endPointerInteraction = (event) => {
         if (!isPointerDown) {
           return;
         }
 
         isPointerDown = false;
+
+        if (event && typeof row.releasePointerCapture === 'function') {
+          try {
+            row.releasePointerCapture(event.pointerId);
+          } catch (_error) {
+            // No-op: pointer may already be released.
+          }
+        }
 
         if (didDrag) {
           window.setTimeout(() => {
@@ -116,6 +134,10 @@ const Home = () => {
         }
       };
 
+      const handleDragStart = (event) => {
+        event.preventDefault();
+      };
+
       row.addEventListener('pointerdown', handlePointerDown);
       row.addEventListener('pointermove', handlePointerMove);
       row.addEventListener('pointerup', endPointerInteraction);
@@ -123,6 +145,7 @@ const Home = () => {
       row.addEventListener('pointerleave', endPointerInteraction);
       row.addEventListener('wheel', handleWheel, { passive: false });
       row.addEventListener('click', handleClickCapture, true);
+      row.addEventListener('dragstart', handleDragStart);
 
       return () => {
         row.removeEventListener('pointerdown', handlePointerDown);
@@ -132,6 +155,7 @@ const Home = () => {
         row.removeEventListener('pointerleave', endPointerInteraction);
         row.removeEventListener('wheel', handleWheel);
         row.removeEventListener('click', handleClickCapture, true);
+        row.removeEventListener('dragstart', handleDragStart);
       };
     });
 
