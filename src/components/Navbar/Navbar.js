@@ -15,8 +15,8 @@ const navItems = [
   },
   {
     label: 'About',
-    to: '/contact-us',
-    isActive: (pathname) => pathname.startsWith('/contact-us'),
+    to: '/about',
+    isActive: (pathname) => pathname.startsWith('/about') || pathname.startsWith('/contact-us'),
   },
 ];
 

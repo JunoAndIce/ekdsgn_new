@@ -1,11 +1,11 @@
 import './assets/css/App.css';
-import Router from './components/router';
+import AppRouter from './components/AppRouter';
 
 
 const App = () => {
   return (
   <>
-    <Router />
+    <AppRouter />
   </>
   );
 }

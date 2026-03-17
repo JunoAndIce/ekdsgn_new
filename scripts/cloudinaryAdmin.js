@@ -443,24 +443,6 @@ const loadProjectInfoFromFolder = async (folderPath, config) => {
   return parseProjectInfoText(text);
 };
 
-const buildGalleryManifest = async ({ folderPaths, config }) => {
-  const normalizedFolderPaths = Array.from(
-    new Set((Array.isArray(folderPaths) ? folderPaths : []).map((folderPath) => String(folderPath || '').trim()).filter(Boolean))
-  );
-
-  const galleries = {};
-
-  for (const folderPath of normalizedFolderPaths) {
-    galleries[folderPath] = await listCloudinaryFolderPublicIds(folderPath, config);
-  }
-
-  return {
-    generatedAt: new Date().toISOString(),
-    source: 'cloudinary-admin-api',
-    galleries,
-  };
-};
-
 const deriveProjectFromFolder = (folderPath, publicIds, index, info = {}) => {
   const segments = String(folderPath || '').split('/').filter(Boolean);
   const folderName = segments[segments.length - 1] || `folder-${index + 1}`;
@@ -524,8 +506,5 @@ const buildCloudinaryProjectsSnapshot = async ({ config, prefix = '', includeEmp
 
 module.exports = {
   getCloudinaryAdminConfigFromEnv,
-  listCloudinaryFolders,
-  listCloudinaryFolderPublicIds,
-  buildGalleryManifest,
   buildCloudinaryProjectsSnapshot,
 };

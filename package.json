@@ -26,9 +26,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "sync:cloudinary-galleries": "node scripts/generate-cloudinary-gallery-manifest.js",
+    "sync:cloudinary-projects": "node scripts/generate-cloudinary-projects-snapshot.js",
     "postinstall": "node scripts/patch-react-dev-utils.js",
-    "prebuild": "npm run sync:cloudinary-galleries",
+    "prebuild": "npm run sync:cloudinary-projects",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -9,7 +9,7 @@ const bioParagraphs = [
   'Ek leads with intention. Every project he touches is rooted in a clear vision and executed with the kind of detail that turns good ideas into lasting work.',
 ];
 
-const Contact = () => {
+const AboutPage = () => {
   return (
     <>
       <Navbar />
@@ -59,4 +59,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default AboutPage;

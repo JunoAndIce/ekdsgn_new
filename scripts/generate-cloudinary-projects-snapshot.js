@@ -7,6 +7,34 @@ const rootDir = path.resolve(__dirname, '..');
 const generatedProjectsPath = path.join(rootDir, 'src', 'data', 'cloudinaryProjects.json');
 const envPath = path.join(rootDir, '.env');
 
+const isRateLimitedError = (error) => {
+  const message = String(error?.message || error || '').toLowerCase();
+  return message.includes('rate limit') || message.includes('429') || message.includes('420');
+};
+
+const readPreviousSnapshot = async () => {
+  if (!fsSync.existsSync(generatedProjectsPath)) {
+    return null;
+  }
+
+  try {
+    const existing = await fs.readFile(generatedProjectsPath, 'utf8');
+    const parsed = JSON.parse(existing);
+    const projects = Array.isArray(parsed?.projects) ? parsed.projects : [];
+
+    if (!projects.length) {
+      return null;
+    }
+
+    return {
+      generatedAt: String(parsed?.generatedAt || '').trim(),
+      projectCount: projects.length,
+    };
+  } catch (_error) {
+    return null;
+  }
+};
+
 const loadLocalEnvFile = () => {
   if (!fsSync.existsSync(envPath)) {
     return;
@@ -66,6 +94,29 @@ const run = async () => {
 };
 
 run().catch((error) => {
+  if (isRateLimitedError(error)) {
+    readPreviousSnapshot()
+      .then((previous) => {
+        if (previous) {
+          const when = previous.generatedAt ? ` from ${previous.generatedAt}` : '';
+          console.warn('Cloudinary API rate limit detected.');
+          console.warn(`Using existing snapshot${when} with ${previous.projectCount} projects.`);
+          process.exit(0);
+          return;
+        }
+
+        console.error('Cloudinary API rate limit detected, and no previous snapshot is available.');
+        console.error(error?.message || error);
+        process.exit(1);
+      })
+      .catch(() => {
+        console.error('Cloudinary API rate limit detected, and previous snapshot fallback failed.');
+        console.error(error?.message || error);
+        process.exit(1);
+      });
+    return;
+  }
+
   console.error('Failed to generate Cloudinary projects snapshot.');
   console.error(error?.message || error);
   process.exit(1);

@@ -56,9 +56,6 @@ CLOUDINARY_CLOUD_NAME=your_cloud_name
 CLOUDINARY_API_KEY=your_api_key
 CLOUDINARY_API_SECRET_BASE64=your_base64_encoded_api_secret
 
-# Server-only token for protected admin manifest endpoint
-CLOUDINARY_MANIFEST_SYNC_TOKEN=your_random_long_token
-
 # Optional: limit auto-discovery to a Cloudinary folder prefix
 CLOUDINARY_PROJECTS_PREFIX=ek
 
@@ -86,29 +83,22 @@ node -e "console.log(Buffer.from('your_cloudinary_api_secret','utf8').toString('
 
 Cloudinary project data is auto-generated at build time from Admin API folder discovery.
 
-Generate the gallery manifest with:
+Generate the Cloudinary projects snapshot with:
 
 ```bash
-npm run sync:cloudinary-galleries
+npm run sync:cloudinary-projects
 ```
 
 This writes:
 
-- `src/data/cloudinaryGalleryManifest.json` (folder -> publicIds lookup)
 - `src/data/cloudinaryProjects.json` (auto-generated project cards)
 
-The build process runs this automatically via `prebuild`, so deployments always compile with fresh server-generated gallery JSON.
-
-Protected admin endpoint:
-
-- `GET /api/admin/cloudinary-gallery-manifest`
-- Requires `Authorization: Bearer <CLOUDINARY_MANIFEST_SYNC_TOKEN>`
-- Never exposes Admin credentials to the browser
+The build process runs this automatically via `prebuild`, so deployments always compile with fresh server-generated project data.
 
 Security notes:
 
 - Never prefix admin credentials with `REACT_APP_`.
-- Keep `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET_BASE64`, and `CLOUDINARY_MANIFEST_SYNC_TOKEN` only in server-side environment variables.
+- Keep `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET_BASE64` only in server-side environment variables.
 - Folder and project discovery are performed only on the server using Cloudinary Admin API credentials.
 
 ## Vercel Frontend Deployment
