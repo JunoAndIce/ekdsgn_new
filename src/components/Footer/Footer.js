@@ -1,16 +1,13 @@
 import React from 'react';
-import { imagePublicIds } from '../../data/imageData';
-import ResponsiveImage from '../media/ResponsiveImage';
+import ekWhiteLogo from '../../assets/images/EKWHITE.png';
 
 const Footer = () => {
   return (
     <div className="footer">
-      <ResponsiveImage
+      <img
         className="footer-logo"
-        publicId={imagePublicIds.footerLogo}
+        src={ekWhiteLogo}
         alt="EK"
-        sizes="200px"
-        width={400}
       />
       <div className="footer-name">
         Ekemini Ekwere — Houston, TX

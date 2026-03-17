@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { imagePublicIds } from '../../data/imageData';
-import ResponsiveImage from '../media/ResponsiveImage';
+import ekWhiteLogo from '../../assets/images/EKWHITE.png';
 
 const navItems = [
   {
@@ -54,14 +53,12 @@ const Navbar = () => {
 
   return (
     <header className={`header${scrolled ? ' scrolled' : ''}`}>
-      <ResponsiveImage
+      <img
         className="header-logo"
-        publicId={imagePublicIds.headerLogo}
+        src={ekWhiteLogo}
         alt="EK"
         loading="eager"
         fetchPriority="high"
-        sizes="220px"
-        width={440}
       />
 
       <nav className="header-nav" ref={navRef} aria-label="Primary">
