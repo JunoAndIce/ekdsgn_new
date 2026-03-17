@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import '../assets/css/portfolio.css';
 import Navbar from '../components/Navbar/Navbar';
@@ -7,6 +7,8 @@ import ProjectMediaCarousel from '../components/media/ProjectMediaCarousel';
 import ResponsiveImage from '../components/media/ResponsiveImage';
 import { useProjectGallery } from '../hooks/useProjectGallery';
 import { defaultProjectKey, projectCards, projectsById } from '../data/projects';
+
+const PREVIEW_COUNT = 4;
 
 const Projects = () => {
   const navigate = useNavigate();
@@ -27,6 +29,16 @@ const Projects = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [activeProjectKey]);
+
+  const [listExpanded, setListExpanded] = useState(false);
+  const hiddenCount = Math.max(0, projectCards.length - PREVIEW_COUNT);
+  const activeIndex = projectCards.findIndex((p) => p.id === activeProjectKey);
+
+  useEffect(() => {
+    if (activeIndex >= PREVIEW_COUNT) {
+      setListExpanded(true);
+    }
+  }, [activeIndex]);
 
   if (!projectCards.length) {
     return (
@@ -80,17 +92,31 @@ const Projects = () => {
         </section>
 
         <section className="project-shell">
-          <div className="project-switcher">
-            {projectCards.map((item) => (
+          <div className="project-switcher-wrap">
+            <div className="project-switcher">
+              {projectCards.map((item, i) => (
+                <button
+                  key={item.id}
+                  className={`project-switcher-item${item.id === activeProjectKey ? ' active' : ''}${!listExpanded && i >= PREVIEW_COUNT ? ' sw-hidden' : ''}`}
+                  onClick={() => navigate(`/projects/${item.id}`)}
+                >
+                  <span className="project-switcher-title">{item.title}</span>
+                  <span className="project-switcher-meta">{item.meta}</span>
+                </button>
+              ))}
+            </div>
+
+            {hiddenCount > 0 && (
               <button
-                key={item.id}
-                className={`project-switcher-item${item.id === activeProjectKey ? ' active' : ''}`}
-                onClick={() => navigate(`/projects/${item.id}`)}
+                className={`switcher-toggle${listExpanded ? ' is-open' : ''}`}
+                onClick={() => setListExpanded((v) => !v)}
               >
-                <span className="project-switcher-title">{item.title}</span>
-                <span className="project-switcher-meta">{item.meta}</span>
+                <span className="switcher-toggle-label">
+                  {listExpanded ? 'Show less' : `${hiddenCount} more projects`}
+                </span>
+                <span className="switcher-toggle-chevron">›</span>
               </button>
-            ))}
+            )}
           </div>
 
           <div className="project-layout">

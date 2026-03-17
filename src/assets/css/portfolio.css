@@ -562,11 +562,57 @@ html, body {
   padding: 32px 0 12px;
 }
 
+/* Switcher wrapper — holds the grid + toggle */
+.project-switcher-wrap {
+  margin-bottom: 24px;
+}
+
 .project-switcher {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-bottom: 24px;
+}
+
+/* Items hidden when list is collapsed */
+.project-switcher-item.sw-hidden {
+  display: none;
+}
+
+/* Show-more / Show-less toggle */
+.switcher-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin: 12px auto 0;
+  padding: 8px 18px 8px 14px;
+  border: 0.5px solid rgba(255,255,255,0.13);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.04);
+  color: rgba(235,235,245,0.6);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.switcher-toggle:hover {
+  border-color: rgba(255,255,255,0.26);
+  background: rgba(255,255,255,0.08);
+  color: rgba(235,235,245,0.9);
+}
+
+.switcher-toggle-chevron {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotate(90deg); /* › rotated 90° = ∨ (down) */
+}
+
+.switcher-toggle.is-open .switcher-toggle-chevron {
+  transform: rotate(-90deg); /* › rotated -90° = ∧ (up) */
 }
 
 .project-switcher-item {
