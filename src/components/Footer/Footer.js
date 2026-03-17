@@ -32,7 +32,16 @@ const Footer = () => {
         <span className="footer-credit-label">Production Credits</span>
         <p className="footer-credit-copy">
           Frontend design by Ekemini Ekwere.<br/>
-          Backend, API Inregraton by Juno and Ice.
+          Backend, API Integration by{' '}
+          <a
+            className="footer-credit-link"
+            href="https://github.com/JunoAndIce"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Juno and Ice
+          </a>
+          .
         </p>
       </div>
     </div>
