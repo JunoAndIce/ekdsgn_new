@@ -418,7 +418,7 @@ const loadProjectInfoFromFolder = async (folderPath, config) => {
     .filter((resource) => {
       const parts = String(resource.publicId || '').split('/').filter(Boolean);
       const fileName = String(parts[parts.length - 1] || '').toLowerCase();
-      return fileName === 'info' || fileName === 'info.txt';
+      return fileName === 'info' || fileName === 'info.txt' || /^info([._-].+)?$/.test(fileName);
     });
 
   const selectedResource = infoCandidates[0];
