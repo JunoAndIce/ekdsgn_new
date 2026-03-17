@@ -399,8 +399,49 @@ html, body {
   display: block; margin: 0 auto 12px;
 }
 .footer-name { font-size: 12px; color: rgba(235,235,245,0.22); letter-spacing: -0.1px; line-height: 1.6; }
+.footer-credit {
+  margin-top: 128px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.footer-credit-label {
+  display: inline-block;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: rgba(235,235,245,0.38);
+}
+.footer-credit-copy {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(235,235,245,0.34);
+}
 .footer-links { display: flex; justify-content: center; gap: 28px; margin-top: 16px; }
-.footer-link { font-size: 14px; color: var(--blue); cursor: pointer; font-weight: 400; }
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.92);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform 0.18s ease, color 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
+}
+.footer-link:hover {
+  transform: translateY(-1px);
+  opacity: 1;
+}
+.footer-link.instagram:hover {
+  color: #d62976;
+}
+.footer-link.youtube:hover {
+  color: #ff0033;
+}
+.footer-link.email:hover {
+  color: #7dd3fc;
+}
 
 /* ─── TOP NAV ─── */
 .header-nav-list {

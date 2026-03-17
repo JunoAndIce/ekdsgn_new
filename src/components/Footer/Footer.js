@@ -1,4 +1,7 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ekWhiteLogo from '../../assets/images/EKWHITE.png';
 
 const Footer = () => {
@@ -15,9 +18,22 @@ const Footer = () => {
         Founder &amp; CEO, hwy6 · Creative Director
       </div>
       <div className="footer-links">
-        <span className="footer-link">Instagram</span>
-        <span className="footer-link">YouTube</span>
-        <span className="footer-link">Contact</span>
+        <span className="footer-link instagram" aria-label="Instagram">
+          <FontAwesomeIcon icon={faInstagram} />
+        </span>
+        <span className="footer-link youtube" aria-label="YouTube">
+          <FontAwesomeIcon icon={faYoutube} />
+        </span>
+        <span className="footer-link email" aria-label="Contact">
+          <FontAwesomeIcon icon={faEnvelope} />
+        </span>
+      </div>
+      <div className="footer-credit">
+        <span className="footer-credit-label">Production Credits</span>
+        <p className="footer-credit-copy">
+          Frontend design by Ekemini Ekwere.<br/>
+          Backend, API Inregraton by Juno and Ice.
+        </p>
       </div>
     </div>
   );
