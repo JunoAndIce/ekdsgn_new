@@ -92,6 +92,20 @@ const postAdminJson = async (url, body, config) => {
   return response.json();
 };
 
+const escapeSearchValue = (value) => String(value || '').replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+
+const fetchText = async (url) => {
+  const response = await fetch(url, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    return '';
+  }
+
+  return response.text();
+};
+
 const listCloudinaryFoldersPage = async (config, options = {}) => {
   const normalizedPrefix = String(options.prefix || '').trim().replace(/^\/+|\/+$/g, '');
   const normalizedCursor = String(options.nextCursor || '').trim();
@@ -279,6 +293,156 @@ const listCloudinaryFolderPublicIds = async (folderPath, config) => {
   return Array.from(publicIdSet).sort((left, right) => left.localeCompare(right));
 };
 
+const listCloudinaryFolderResources = async (folderPath, config) => {
+  const normalizedFolderPath = String(folderPath || '').trim().replace(/^\/+|\/+$/g, '');
+
+  if (!normalizedFolderPath) {
+    return [];
+  }
+
+  const resources = [];
+  let nextCursor = '';
+
+  do {
+    const url = new URL(`${CLOUDINARY_API_BASE_URL}/${encodeURIComponent(config.cloudName)}/resources/search`);
+    const payload = await postAdminJson(
+      url,
+      {
+        expression: `(asset_folder="${escapeSearchValue(normalizedFolderPath)}" OR folder="${escapeSearchValue(normalizedFolderPath)}")`,
+        max_results: MAX_RESULTS,
+        next_cursor: nextCursor || undefined,
+      },
+      config
+    );
+    const pageResources = Array.isArray(payload?.resources) ? payload.resources : [];
+
+    pageResources.forEach((resource) => {
+      const publicId = String(resource?.public_id || '').trim();
+      const secureUrl = String(resource?.secure_url || '').trim();
+      const rawUrl = String(resource?.url || '').trim();
+      const format = String(resource?.format || '').trim().toLowerCase();
+      const resourceType = String(resource?.resource_type || '').trim().toLowerCase();
+
+      if (!publicId) {
+        return;
+      }
+
+      resources.push({
+        publicId,
+        secureUrl,
+        rawUrl,
+        format,
+        resourceType,
+      });
+    });
+
+    nextCursor = String(payload?.next_cursor || '').trim();
+  } while (nextCursor);
+
+  return resources;
+};
+
+const parseProjectInfoText = (contents) => {
+  const text = String(contents || '').replace(/^\uFEFF/, '').trim();
+
+  if (!text) {
+    return {
+      title: '',
+      description: '',
+    };
+  }
+
+  const lines = text
+    .split(/\r?\n/)
+    .map((line) => String(line || '').trim())
+    .filter(Boolean);
+
+  let title = '';
+  let description = '';
+  const remainder = [];
+
+  lines.forEach((line) => {
+    const match = line.match(/^([a-zA-Z][a-zA-Z\s_-]{1,30})\s*:\s*(.+)$/);
+
+    if (!match) {
+      remainder.push(line);
+      return;
+    }
+
+    const key = match[1].trim().toLowerCase().replace(/\s+/g, '');
+    const value = match[2].trim();
+
+    if (!value) {
+      return;
+    }
+
+    if (!title && ['name', 'title', 'project', 'projectname'].includes(key)) {
+      title = value;
+      return;
+    }
+
+    if (!description && ['description', 'desc', 'summary', 'about'].includes(key)) {
+      description = value;
+      return;
+    }
+
+    remainder.push(line);
+  });
+
+  if (!title && remainder.length > 0) {
+    [title] = remainder;
+  }
+
+  if (!description && remainder.length > 1) {
+    description = remainder.slice(title ? 1 : 0).join(' ');
+  }
+
+  return {
+    title: String(title || '').trim(),
+    description: String(description || '').trim(),
+  };
+};
+
+const loadProjectInfoFromFolder = async (folderPath, config) => {
+  const folderResources = await listCloudinaryFolderResources(folderPath, config);
+
+  if (!folderResources.length) {
+    return {
+      title: '',
+      description: '',
+    };
+  }
+
+  const infoCandidates = folderResources
+    .filter((resource) => resource.resourceType === 'raw' || resource.format === 'txt')
+    .filter((resource) => {
+      const parts = String(resource.publicId || '').split('/').filter(Boolean);
+      const fileName = String(parts[parts.length - 1] || '').toLowerCase();
+      return fileName === 'info' || fileName === 'info.txt';
+    });
+
+  const selectedResource = infoCandidates[0];
+
+  if (!selectedResource) {
+    return {
+      title: '',
+      description: '',
+    };
+  }
+
+  const downloadUrl = selectedResource.secureUrl || selectedResource.rawUrl;
+
+  if (!downloadUrl) {
+    return {
+      title: '',
+      description: '',
+    };
+  }
+
+  const text = await fetchText(downloadUrl);
+  return parseProjectInfoText(text);
+};
+
 const buildGalleryManifest = async ({ folderPaths, config }) => {
   const normalizedFolderPaths = Array.from(
     new Set((Array.isArray(folderPaths) ? folderPaths : []).map((folderPath) => String(folderPath || '').trim()).filter(Boolean))
@@ -297,14 +461,16 @@ const buildGalleryManifest = async ({ folderPaths, config }) => {
   };
 };
 
-const deriveProjectFromFolder = (folderPath, publicIds, index) => {
+const deriveProjectFromFolder = (folderPath, publicIds, index, info = {}) => {
   const segments = String(folderPath || '').split('/').filter(Boolean);
   const folderName = segments[segments.length - 1] || `folder-${index + 1}`;
   const groupSegment = segments.length > 1 ? segments[1] : segments[0] || 'cloudinary';
   const groupLabel = toTitleCase(groupSegment) || 'Cloudinary';
   const category = toSlug(groupSegment) || 'cloudinary';
   const id = toSlug(folderPath.replace(/\//g, '-')) || `project-${index + 1}`;
-  const title = toTitleCase(folderName) || `Project ${index + 1}`;
+  const parsedTitle = String(info?.title || '').trim();
+  const parsedDescription = String(info?.description || '').trim();
+  const title = parsedTitle || toTitleCase(folderName) || `Project ${index + 1}`;
   const tags = [groupLabel, 'Cloudinary'];
 
   return {
@@ -314,7 +480,7 @@ const deriveProjectFromFolder = (folderPath, publicIds, index) => {
     title,
     groupName: groupLabel,
     meta: groupLabel,
-    description: `${groupLabel} project gallery`,
+    description: parsedDescription || `${groupLabel} project gallery`,
     tags,
     publicIds,
     folderPath,
@@ -336,13 +502,14 @@ const buildCloudinaryProjectsSnapshot = async ({ config, prefix = '', includeEmp
   for (let index = 0; index < folderPaths.length; index += 1) {
     const folderPath = folderPaths[index];
     const publicIds = await listCloudinaryFolderPublicIds(folderPath, config);
+    const projectInfo = await loadProjectInfoFromFolder(folderPath, config);
     galleries[folderPath] = publicIds;
 
     if (!includeEmptyFolders && publicIds.length === 0) {
       continue;
     }
 
-    projects.push(deriveProjectFromFolder(folderPath, publicIds, index));
+    projects.push(deriveProjectFromFolder(folderPath, publicIds, index, projectInfo));
   }
 
   return {
